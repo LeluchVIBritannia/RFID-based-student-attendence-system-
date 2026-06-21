@@ -2,19 +2,27 @@
 #define ATTENDANCEPAGE_H
 
 #include <QWidget>
+#include "database.h"
 
 namespace Ui { class AttendancePage; }
 
 class AttendancePage : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit AttendancePage(QWidget *parent = nullptr);
     ~AttendancePage();
 
+    void refreshData();
+
+    void onRFIDScanned(const QString &rfidCardId);
+
 private:
-    void populateTable();
+    void updateAttendanceTable();
+
     Ui::AttendancePage *ui;
+    DatabaseManager *m_db;
 };
 
 #endif

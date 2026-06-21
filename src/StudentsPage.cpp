@@ -1,9 +1,14 @@
 #include "StudentsPage.h"
 #include "ui_StudentsPage.h"
+#include "DashboardPage.h"
 
 #include <QTableWidgetItem>
 #include <QColor>
 #include <QFont>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSqlQuery>
+#include <QDebug>
 
 static QTableWidgetItem* colorItem(const QString &text, const QString &hex)
 {
@@ -13,10 +18,11 @@ static QTableWidgetItem* colorItem(const QString &text, const QString &hex)
 }
 
 StudentsPage::StudentsPage(QWidget *parent)
-    : QWidget(parent), ui(new Ui::StudentsPage)
+    : QWidget(parent), ui(new Ui::StudentsPage), m_db(DatabaseManager::instance())
 {
     ui->setupUi(this);
-    populateTable();
+    connectButtons();
+    refreshData();
 }
 
 StudentsPage::~StudentsPage()
@@ -24,26 +30,116 @@ StudentsPage::~StudentsPage()
     delete ui;
 }
 
-void StudentsPage::populateTable()
+void StudentsPage::connectButtons()
+{
+    QPushButton *addButton = ui->pushButtonAddStudent;
+    if (addButton) {
+        connect(addButton, &QPushButton::clicked, this, [this]() {
+            QWidget *parent = parentWidget();
+            while (parent && !parent->inherits("DashboardPage")) {
+                parent = parent->parentWidget();
+            }
+            if (parent) {
+                DashboardPage *dashboard = qobject_cast<DashboardPage*>(parent);
+                if (dashboard) dashboard->navigateToRegisterPage();
+            }
+        });
+    }
+
+    QPushButton *deleteButton = ui->pushButtonDeleteStudent;
+    if (deleteButton) {
+        connect(deleteButton, &QPushButton::clicked, this, &StudentsPage::onDeleteStudentClicked);
+    }
+}
+
+void StudentsPage::onDeleteStudentClicked()
+{
+    Student student = getSelectedStudent();
+
+    if (student.id == -1) {
+        QMessageBox::warning(this, "No Selection", "Please select a student to delete.");
+        return;
+    }
+
+    QMessageBox::StandardButton reply = QMessageBox::question(
+        this, "Confirm Delete",
+        QString("Delete student '%1' (Roll: %2)?").arg(student.name).arg(student.rollNo),
+        QMessageBox::Yes | QMessageBox::No
+        );
+
+    if (reply == QMessageBox::No) return;
+
+    if (m_db->deleteStudent(student.id)) {
+        QMessageBox::information(this, "Success", "Student deleted!");
+        refreshData();
+    } else {
+        QMessageBox::critical(this, "Error", "Failed to delete.");
+    }
+}
+
+void StudentsPage::refreshData()
+{
+    if (!m_db) return;
+    qDebug() << "Refreshing student table...";
+    updateStudentTable();
+}
+
+void StudentsPage::onStudentAdded()
+{
+    refreshData();
+}
+
+void StudentsPage::updateStudentTable()
+{
+    if (!m_db) return;
+
+    QTableWidget *t = ui->tableStudents;
+    QList<Student> students = m_db->getAllStudents();
+
+    t->setRowCount(0);
+
+    if (students.isEmpty()) {
+        t->setRowCount(1);
+        QTableWidgetItem *msgItem = new QTableWidgetItem("No students registered");
+        msgItem->setTextAlignment(Qt::AlignCenter);
+        t->setItem(0, 0, msgItem);
+        t->setSpan(0, 0, 1, 5);
+        return;
+    }
+
+    // Update column headers to show Registration Date instead of Attendance %
+    t->setColumnCount(5);
+    t->setHorizontalHeaderLabels({"Name", "Roll No.", "RFID Card ID", "Balance (NPR)", "Registration Date"});
+    t->horizontalHeader()->setStretchLastSection(true);
+
+    t->setRowCount(students.size());
+    QFont mono("Courier New");
+
+    for (int r = 0; r < students.size(); ++r) {
+        const Student &student = students[r];
+
+        t->setItem(r, 0, new QTableWidgetItem(student.name));
+        t->setItem(r, 1, new QTableWidgetItem(student.rollNo));
+
+        auto *rfidItem = colorItem(student.rfidCardId, "#3498DB");
+        rfidItem->setFont(mono);
+        t->setItem(r, 2, rfidItem);
+        t->setItem(r, 3, new QTableWidgetItem(QString("Rs. %1").arg(student.balance)));
+        t->setItem(r, 4, new QTableWidgetItem(student.registrationDate));
+        t->setRowHeight(r, 40);
+    }
+
+    qDebug() << "Table updated with" << students.size() << "rows";
+}
+
+Student StudentsPage::getSelectedStudent()
 {
     QTableWidget *t = ui->tableStudents;
-    struct Row { QString name,roll,rfid,bal,att; bool good; };
-    QList<Row> rows = {
-        {"Krimud Sainju","08","A1B2C3D4","Rs. 1,200","87%",true},
-        {"Alvin Shah","10","E5F6G7H8","Rs. 850","91%",true},
-        {"Sanskar Shrestha","23","I9J0K1L2","Rs. 2,100","62%",false},
-        {"Pallav Thani","32","M3N4O5P6","Rs. 500","95%",true},
-        {"Bishwo Timalsina","37","Q7R8S9T0","Rs. 1,750","88%",true},
-    };
-    QFont mono("Courier New");
-    for (int r = 0; r < rows.size(); ++r) {
-        t->setItem(r,0,new QTableWidgetItem(rows[r].name));
-        t->setItem(r,1,new QTableWidgetItem(rows[r].roll));
-        auto *rfidItem = colorItem(rows[r].rfid, "#3498DB");
-        rfidItem->setFont(mono);
-        t->setItem(r,2,rfidItem);
-        t->setItem(r,3,new QTableWidgetItem(rows[r].bal));
-        t->setItem(r,4,colorItem(rows[r].att, rows[r].good ? "#2ECC71" : "#E74C3C"));
-        t->setRowHeight(r,46);
-    }
+    int row = t->currentRow();
+    if (row < 0) return Student();
+
+    QTableWidgetItem *rollItem = t->item(row, 1);
+    if (!rollItem) return Student();
+
+    return m_db->getStudentByRoll(rollItem->text());
 }

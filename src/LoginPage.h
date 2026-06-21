@@ -8,6 +8,7 @@ namespace Ui { class LoginPage; }
 class LoginPage : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit LoginPage(QWidget *parent = nullptr);
     ~LoginPage();
@@ -19,8 +20,6 @@ private slots:
     void onLoginClicked();
 
 private:
-    bool validateCredentials(const QString &username, const QString &password);
-
     Ui::LoginPage *ui;
 };
 
