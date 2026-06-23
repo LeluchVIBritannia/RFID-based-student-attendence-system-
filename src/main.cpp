@@ -1,16 +1,18 @@
 #include <QApplication>
+#include <QDebug>
 #include "MainWindow.h"
 #include "SerialManager.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setApplicationName("KU RFID System");
-    app.setOrganizationName("Kathmandu University");
-    app.setApplicationVersion("1.0.0");
+
+    qDebug() << "Application started!";
 
     MainWindow w;
     w.show();
+
+    qDebug() << "Window should be visible now!";
 
     SerialManager manager;
     return app.exec();

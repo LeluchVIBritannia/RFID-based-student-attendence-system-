@@ -8,6 +8,7 @@ TEMPLATE  = app
 VERSION   = 1.0.0
 
 SOURCES += \
+    src/database.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
     src/LoginPage.cpp \
@@ -18,8 +19,8 @@ SOURCES += \
     src/StudentsPage.cpp \
     src/ReportsPage.cpp \
     src/RegisterCardPage.cpp \
-    src/ScanTerminalPage.cpp
-    # ADD NEW PAGE SOURCES HERE
+    src/ScanTerminalPage.cpp \
+    src/testdata.cpp
 
 HEADERS += \
     src/MainWindow.h \
@@ -31,8 +32,9 @@ HEADERS += \
     src/StudentsPage.h \
     src/ReportsPage.h \
     src/RegisterCardPage.h \
-    src/ScanTerminalPage.h
-    # ADD NEW PAGE HEADERS HERE
+    src/ScanTerminalPage.h \
+    src/database.h \
+    src/testdata.h
 
 FORMS += \
     ui/LoginPage.ui \
@@ -44,8 +46,6 @@ FORMS += \
     ui/ReportsPage.ui \
     ui/RegisterCardPage.ui \
     ui/ScanTerminalPage.ui
-    # ADD NEW .ui FILES HERE
 
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+# Add this after QT += core widgets sql
+INCLUDEPATH += $$[QT_INSTALL_HEADERS]

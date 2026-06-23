@@ -1,12 +1,21 @@
 #include "MainWindow.h"
 #include "LoginPage.h"
 #include "DashboardPage.h"
+#include "testdata.h"
 
 #include <QScreen>
 #include <QGuiApplication>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    // Initialize database
+    m_db = DatabaseManager::instance();
+    qDebug() << "Database manager created";
+
+    // Add test data (students, attendance, cafeteria)
+    addManualTestData();
+
     setWindowTitle("KU RFID — Student Attendance & Cafeteria System");
     setMinimumSize(1100, 700);
 
@@ -23,15 +32,33 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     m_loginPage = new LoginPage(this);
     m_dashboardPage = new DashboardPage(this);
 
-    m_stack->addWidget(m_loginPage);     // index 0 -> LOGIN
-    m_stack->addWidget(m_dashboardPage); // index 1 -> DASHBOARD
-    // ADD NEW PAGES: m_stack->addWidget(m_newPage); // index 2
+    m_dashboardPage->setDatabase(m_db);
+
+    m_stack->addWidget(m_loginPage);
+    m_stack->addWidget(m_dashboardPage);
 
     connect(m_loginPage, &LoginPage::loginSuccess, this, &MainWindow::goToDashboard);
     connect(m_dashboardPage, &DashboardPage::logoutRequested, this, &MainWindow::goToLogin);
 
     m_stack->setCurrentIndex(LOGIN);
+
+    qDebug() << "MainWindow setup complete";
 }
 
-void MainWindow::goToDashboard() { m_stack->setCurrentIndex(DASHBOARD); }
-void MainWindow::goToLogin()     { m_stack->setCurrentIndex(LOGIN); }
+MainWindow::~MainWindow()
+{
+    qDebug() << "MainWindow destroyed";
+}
+
+void MainWindow::goToDashboard()
+{
+    qDebug() << "Going to dashboard";
+    m_stack->setCurrentIndex(DASHBOARD);
+    m_dashboardPage->refreshAllPages();
+}
+
+void MainWindow::goToLogin()
+{
+    qDebug() << "Going to login";
+    m_stack->setCurrentIndex(LOGIN);
+}

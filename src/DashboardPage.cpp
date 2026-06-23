@@ -8,21 +8,27 @@
 #include "ReportsPage.h"
 #include "RegisterCardPage.h"
 #include "ScanTerminalPage.h"
-// ADD NEW PAGE INCLUDES HERE
 
 #include <QDateTime>
 #include <QPushButton>
+#include <QDebug>
 
 DashboardPage::DashboardPage(QWidget *parent)
-    : QWidget(parent), ui(new Ui::DashboardPage)
+    : QWidget(parent)
+    , ui(new Ui::DashboardPage)
+    , m_db(nullptr)
+    , m_overviewPage(nullptr)
+    , m_attendancePage(nullptr)
+    , m_cafeteriaPage(nullptr)
+    , m_studentsPage(nullptr)
+    , m_reportsPage(nullptr)
+    , m_registerPage(nullptr)
+    , m_scanPage(nullptr)
 {
     ui->setupUi(this);
-
     ui->labelTopDate->setText(QDateTime::currentDateTime().toString("ddd, dd MMM yyyy"));
-
     setupPages();
     wireNav();
-
     connect(ui->pushButtonLogout, &QPushButton::clicked, this, &DashboardPage::logoutRequested);
 }
 
@@ -31,7 +37,25 @@ DashboardPage::~DashboardPage()
     delete ui;
 }
 
-// ── Instantiate each page and add it to the stacked widget ──────────────────
+void DashboardPage::setDatabase(DatabaseManager *db)
+{
+    m_db = db;
+    refreshAllPages();
+}
+
+void DashboardPage::refreshAllPages()
+{
+    if (!m_db) return;
+
+    if (m_overviewPage) m_overviewPage->refreshData();
+    if (m_attendancePage) m_attendancePage->refreshData();
+    if (m_cafeteriaPage) m_cafeteriaPage->refreshData();
+    if (m_studentsPage) m_studentsPage->refreshData();
+    if (m_reportsPage) m_reportsPage->refreshData();
+    if (m_registerPage) m_registerPage->refreshData();
+    if (m_scanPage) m_scanPage->refreshData();
+}
+
 void DashboardPage::setupPages()
 {
     m_overviewPage   = new OverviewPage(this);
@@ -42,19 +66,20 @@ void DashboardPage::setupPages()
     m_registerPage   = new RegisterCardPage(this);
     m_scanPage       = new ScanTerminalPage(this);
 
-    ui->stackedWidget->addWidget(m_overviewPage);   // index 0
-    ui->stackedWidget->addWidget(m_attendancePage); // index 1
-    ui->stackedWidget->addWidget(m_cafeteriaPage);  // index 2
-    ui->stackedWidget->addWidget(m_studentsPage);   // index 3
-    ui->stackedWidget->addWidget(m_reportsPage);    // index 4
-    ui->stackedWidget->addWidget(m_registerPage);   // index 5
-    ui->stackedWidget->addWidget(m_scanPage);       // index 6
-    // ADD NEW PAGES HERE: ui->stackedWidget->addWidget(m_newPage); // index 7
+    connect(m_registerPage, &RegisterCardPage::studentAdded,
+            m_studentsPage, &StudentsPage::onStudentAdded);
+
+    ui->stackedWidget->addWidget(m_overviewPage);
+    ui->stackedWidget->addWidget(m_attendancePage);
+    ui->stackedWidget->addWidget(m_cafeteriaPage);
+    ui->stackedWidget->addWidget(m_studentsPage);
+    ui->stackedWidget->addWidget(m_reportsPage);
+    ui->stackedWidget->addWidget(m_registerPage);
+    ui->stackedWidget->addWidget(m_scanPage);
 
     ui->stackedWidget->setCurrentWidget(m_overviewPage);
 }
 
-// ── Sidebar navigation wiring ─────────────────────────────────────────────────
 void DashboardPage::wireNav()
 {
     connect(ui->navBtnOverview,   &QPushButton::clicked, this, &DashboardPage::onNavClicked);
@@ -64,7 +89,6 @@ void DashboardPage::wireNav()
     connect(ui->navBtnReports,    &QPushButton::clicked, this, &DashboardPage::onNavClicked);
     connect(ui->navBtnRegister,   &QPushButton::clicked, this, &DashboardPage::onNavClicked);
     connect(ui->navBtnScan,       &QPushButton::clicked, this, &DashboardPage::onNavClicked);
-    // ADD NEW NAV BUTTON CONNECTIONS HERE
 }
 
 void DashboardPage::onNavClicked()
@@ -78,14 +102,75 @@ void DashboardPage::onNavClicked()
     ui->navBtnReports->setChecked(sender_ == ui->navBtnReports);
     ui->navBtnRegister->setChecked(sender_ == ui->navBtnRegister);
     ui->navBtnScan->setChecked(sender_ == ui->navBtnScan);
-    // ADD NEW NAV BUTTONS HERE
 
-    if (sender_ == ui->navBtnOverview)        ui->stackedWidget->setCurrentWidget(m_overviewPage);
-    else if (sender_ == ui->navBtnAttendance) ui->stackedWidget->setCurrentWidget(m_attendancePage);
-    else if (sender_ == ui->navBtnCafeteria)  ui->stackedWidget->setCurrentWidget(m_cafeteriaPage);
-    else if (sender_ == ui->navBtnStudents)   ui->stackedWidget->setCurrentWidget(m_studentsPage);
-    else if (sender_ == ui->navBtnReports)    ui->stackedWidget->setCurrentWidget(m_reportsPage);
-    else if (sender_ == ui->navBtnRegister)   ui->stackedWidget->setCurrentWidget(m_registerPage);
-    else if (sender_ == ui->navBtnScan)       ui->stackedWidget->setCurrentWidget(m_scanPage);
-    // ADD NEW PAGE SWITCHES HERE
+    if (sender_ == ui->navBtnOverview) {
+        ui->stackedWidget->setCurrentWidget(m_overviewPage);
+        updateOverviewPage();
+    }
+    else if (sender_ == ui->navBtnAttendance) {
+        ui->stackedWidget->setCurrentWidget(m_attendancePage);
+        updateAttendancePage();
+    }
+    else if (sender_ == ui->navBtnCafeteria) {
+        ui->stackedWidget->setCurrentWidget(m_cafeteriaPage);
+        updateCafeteriaPage();
+    }
+    else if (sender_ == ui->navBtnStudents) {
+        ui->stackedWidget->setCurrentWidget(m_studentsPage);
+        updateStudentsPage();
+    }
+    else if (sender_ == ui->navBtnReports) {
+        ui->stackedWidget->setCurrentWidget(m_reportsPage);
+        updateReportsPage();
+    }
+    else if (sender_ == ui->navBtnRegister) {
+        ui->stackedWidget->setCurrentWidget(m_registerPage);
+        updateRegisterCardPage();
+    }
+    else if (sender_ == ui->navBtnScan) {
+        ui->stackedWidget->setCurrentWidget(m_scanPage);
+        updateScanTerminalPage();
+    }
+}
+
+void DashboardPage::navigateToRegisterPage()
+{
+    ui->stackedWidget->setCurrentWidget(m_registerPage);
+    ui->navBtnRegister->setChecked(true);
+    updateRegisterCardPage();
+}
+
+void DashboardPage::updateOverviewPage()
+{
+    if (m_overviewPage) m_overviewPage->refreshData();
+}
+
+void DashboardPage::updateAttendancePage()
+{
+    if (m_attendancePage) m_attendancePage->refreshData();
+}
+
+void DashboardPage::updateCafeteriaPage()
+{
+    if (m_cafeteriaPage) m_cafeteriaPage->refreshData();
+}
+
+void DashboardPage::updateStudentsPage()
+{
+    if (m_studentsPage) m_studentsPage->refreshData();
+}
+
+void DashboardPage::updateReportsPage()
+{
+    if (m_reportsPage) m_reportsPage->refreshData();
+}
+
+void DashboardPage::updateRegisterCardPage()
+{
+    if (m_registerPage) m_registerPage->refreshData();
+}
+
+void DashboardPage::updateScanTerminalPage()
+{
+    if (m_scanPage) m_scanPage->refreshData();
 }
