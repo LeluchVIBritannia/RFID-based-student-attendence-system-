@@ -24,6 +24,7 @@ set(SOURCES
     src/ReportsPage.cpp
     src/RegisterCardPage.cpp
     src/ScanTerminalPage.cpp
+    src/StudentDashboardPage.cpp
 )
 
 set(HEADERS
@@ -37,6 +38,7 @@ set(HEADERS
     src/ReportsPage.h
     src/RegisterCardPage.h
     src/ScanTerminalPage.h
+    src/StudentDashboardPage.h
 )
 
 
@@ -50,6 +52,7 @@ set(FORMS
     ui/ReportsPage.ui
     ui/RegisterCardPage.ui
     ui/ScanTerminalPage.ui
+    ui/StudentDashboardPage.ui
 )
 
 qt_add_executable(rfid_system ${SOURCES} ${HEADERS} ${FORMS}
