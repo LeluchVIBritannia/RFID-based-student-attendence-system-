@@ -9,7 +9,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ui)
 
-
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql SerialPort)
 
 set(SOURCES
@@ -25,6 +24,9 @@ set(SOURCES
     src/RegisterCardPage.cpp
     src/ScanTerminalPage.cpp
     src/StudentDashboardPage.cpp
+    src/SerialMangaer.cpp
+    src/database.cpp   # <-- ADD THIS LINE
+    src/testdata.cpp   # <-- ADD THIS LINE
 )
 
 set(HEADERS
@@ -39,8 +41,10 @@ set(HEADERS
     src/RegisterCardPage.h
     src/ScanTerminalPage.h
     src/StudentDashboardPage.h
+    src/SerialManager.h
+    src/database.h   # <-- ADD THIS LINE
+    src/testdata.h   # <-- ADD THIS LINE
 )
-
 
 set(FORMS
     ui/LoginPage.ui
@@ -55,19 +59,16 @@ set(FORMS
     ui/StudentDashboardPage.ui
 )
 
-qt_add_executable(rfid_system ${SOURCES} ${HEADERS} ${FORMS}
-    src/SerialManager.h
-    src/SerialMangaer.cpp)
 
+qt_add_executable(rfid_system ${SOURCES} ${HEADERS} ${FORMS})
 
 target_link_libraries(rfid_system PRIVATE
-    Qt6::Core 
-    Qt6::Gui 
-    Qt6::Widgets 
-    Qt6::Sql 
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Widgets
+    Qt6::Sql
     Qt6::SerialPort
 )
-
 
 set_target_properties(rfid_system PROPERTIES
     WIN32_EXECUTABLE TRUE
