@@ -1,17 +1,25 @@
 #include "ScanTerminalPage.h"
 #include "ui_ScanTerminalPage.h"
-#include "MainWindow.h"  // ADD THIS
+#include "MainWindow.h"
+#include "SerialManager.h"  // ADD THIS
 
 #include <QLabel>
 #include <QDateTime>
 #include <QDebug>
 
 ScanTerminalPage::ScanTerminalPage(QWidget *parent)
-    : QWidget(parent), ui(new Ui::ScanTerminalPage), m_db(DatabaseManager::instance())
+    : QWidget(parent)
+    , ui(new Ui::ScanTerminalPage)
+    , m_db(DatabaseManager::instance())
+    , m_serialManager(new SerialManager(this))  // CREATE SerialManager
 {
     ui->setupUi(this);
     wireButtons();
     refreshData();
+
+    // CONNECT SerialManager to this page
+    connect(m_serialManager, &SerialManager::cardScanned,
+            this, &ScanTerminalPage::onSerialCardScanned);
 }
 
 ScanTerminalPage::~ScanTerminalPage()
@@ -24,6 +32,13 @@ void ScanTerminalPage::refreshData()
     setState("📡", "Waiting for Card...", "Tap an RFID card on the reader to begin", "#E8E8F0", "#3A3A5A");
 }
 
+// THIS FUNCTION RECEIVES THE UID FROM SERIAL MANAGER
+void ScanTerminalPage::onSerialCardScanned(const QString &uid)
+{
+    qDebug() << "📇 Card scanned from serial:" << uid;
+    onRFIDScanned(uid, "attendance");
+}
+
 void ScanTerminalPage::onRFIDScanned(const QString &rfidCardId, const QString &mode)
 {
     if (!m_db) {
@@ -34,7 +49,7 @@ void ScanTerminalPage::onRFIDScanned(const QString &rfidCardId, const QString &m
     Student student = m_db->getStudentByRFID(rfidCardId);
 
     if (student.id == -1) {
-        setState("❌", "Invalid Card", "Card not recognized — please contact the administrator", "#E74C3C", "#E74C3C");
+        setState("❌", "Invalid Card", "Card not recognized", "#E74C3C", "#E74C3C");
         return;
     }
 
@@ -45,34 +60,17 @@ void ScanTerminalPage::onRFIDScanned(const QString &rfidCardId, const QString &m
             setState("✅", "Attendance Marked",
                      QString("%1 (Roll %2) — %3").arg(student.name).arg(student.rollNo).arg(time),
                      "#2ECC71", "#2ECC71");
-
-            // AFTER MARKING ATTENDANCE, NAVIGATE TO STUDENT DASHBOARD
             navigateToStudentDashboard(rfidCardId);
         } else {
             setState("⚠️", "Already Recorded",
-                     "Attendance for this session was already marked", "#F39C12", "#F39C12");
-
-            // STILL NAVIGATE TO STUDENT DASHBOARD TO SHOW THEIR STATUS
+                     "Attendance already marked", "#F39C12", "#F39C12");
             navigateToStudentDashboard(rfidCardId);
         }
-    } else if (mode == "cafeteria") {
-        int balance = m_db->getStudentBalance(student.id);
-        setState("🍽️", "Student Found",
-                 QString("%1 (Roll %2) — Balance: Rs. %3").arg(student.name).arg(student.rollNo).arg(balance),
-                 "#3498DB", "#3498DB");
-
-        // NAVIGATE TO STUDENT DASHBOARD FOR CAFETERIA VIEW
-        navigateToStudentDashboard(rfidCardId);
-    } else {
-        // Default: just show student dashboard
-        navigateToStudentDashboard(rfidCardId);
     }
 }
 
-// ADD THIS NEW FUNCTION
 void ScanTerminalPage::navigateToStudentDashboard(const QString &rfidCardId)
 {
-    // Find the MainWindow instance
     QWidget *parent = parentWidget();
     while (parent && !parent->inherits("MainWindow")) {
         parent = parent->parentWidget();
@@ -83,11 +81,7 @@ void ScanTerminalPage::navigateToStudentDashboard(const QString &rfidCardId)
         if (mainWin) {
             qDebug() << "📱 Navigating to Student Dashboard for RFID:" << rfidCardId;
             mainWin->showStudentDashboard(rfidCardId);
-        } else {
-            qDebug() << "❌ Failed to cast to MainWindow";
         }
-    } else {
-        qDebug() << "❌ MainWindow not found in parent chain";
     }
 }
 
@@ -105,12 +99,19 @@ void ScanTerminalPage::setState(const QString &icon, const QString &msg, const Q
 
 void ScanTerminalPage::wireButtons()
 {
+    // Demo buttons for testing without hardware
     connect(ui->pushButtonDemoMarked, &QPushButton::clicked, this, [this]() {
-        onRFIDScanned("A1B2C3D4", "attendance");
+        QList<Student> students = m_db->getAllStudents();
+        if (!students.isEmpty()) {
+            onRFIDScanned(students[0].rfidCardId, "attendance");
+        }
     });
 
     connect(ui->pushButtonDemoAlready, &QPushButton::clicked, this, [this]() {
-        onRFIDScanned("A1B2C3D4", "attendance");
+        QList<Student> students = m_db->getAllStudents();
+        if (!students.isEmpty()) {
+            onRFIDScanned(students[0].rfidCardId, "attendance");
+        }
     });
 
     connect(ui->pushButtonDemoInvalid, &QPushButton::clicked, this, [this]() {
@@ -118,7 +119,10 @@ void ScanTerminalPage::wireButtons()
     });
 
     connect(ui->pushButtonDemoCafeteria, &QPushButton::clicked, this, [this]() {
-        onRFIDScanned("A1B2C3D4", "cafeteria");
+        QList<Student> students = m_db->getAllStudents();
+        if (!students.isEmpty()) {
+            onRFIDScanned(students[0].rfidCardId, "cafeteria");
+        }
     });
 
     connect(ui->pushButtonDemoReset, &QPushButton::clicked, this, [this]() {

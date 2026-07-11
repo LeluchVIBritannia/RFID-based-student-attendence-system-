@@ -5,7 +5,7 @@
 #include "database.h"
 
 namespace Ui { class StudentDashboardPage; }
-//0
+
 class StudentDashboardPage : public QWidget
 {
     Q_OBJECT
@@ -18,15 +18,20 @@ public:
     void refreshData();
 
 private:
-    bool ensureDatabaseOpen();  // ADD THIS
+    bool ensureDatabaseOpen();
     void updateUI(const Student &student);
     void updateAttendanceStats(int studentId);
     void updateBalance(int studentId);
     void updateRecentTransactions(int studentId);
     void updateTodayMeals(int studentId);
 
+    // Helper to execute queries safely
+    bool executeQuery(QSqlQuery &query, const QString &sql);
+    bool bindAndExecute(QSqlQuery &query);
+
     Ui::StudentDashboardPage *ui;
     DatabaseManager *m_db;
+    QSqlDatabase m_dbConnection;  // Keep a separate connection
 };
 
 #endif

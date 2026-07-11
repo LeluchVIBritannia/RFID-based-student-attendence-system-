@@ -4,6 +4,9 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QSqlQuery>
+#include <QSqlError>
+#include <QCoreApplication>
+#include <QDir>
 
 StudentDashboardPage::StudentDashboardPage(QWidget *parent)
     : QWidget(parent)
@@ -12,40 +15,87 @@ StudentDashboardPage::StudentDashboardPage(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Create a separate database connection for this page
+    m_dbConnection = QSqlDatabase::addDatabase("QSQLITE", "student_dashboard_connection");
+    QString dbPath = QDir::currentPath() + "/ku_rfid.db";
+    m_dbConnection.setDatabaseName(dbPath);
+
+    if (!m_dbConnection.open()) {
+        qDebug() << "❌ Failed to open student dashboard database:" << m_dbConnection.lastError().text();
+    } else {
+        qDebug() << "✅ Student dashboard database opened successfully";
+    }
+
     // Set default avatar initials
     ui->labelAvatar->setText("??");
-
-    // Show waiting state
     ui->labelFooterText->setText("Waiting for card tap...");
-
-    // Ensure database is open
-    if (m_db && !m_db->isOpen()) {
-        qDebug() << "⚠️ Database not open, reinitializing...";
-        m_db->initDatabase();
-    }
 }
 
 StudentDashboardPage::~StudentDashboardPage()
 {
+    if (m_dbConnection.isOpen()) {
+        m_dbConnection.close();
+    }
+    if (QSqlDatabase::contains("student_dashboard_connection")) {
+        QSqlDatabase::removeDatabase("student_dashboard_connection");
+    }
     delete ui;
 }
 
-// Helper function to ensure database is open
 bool StudentDashboardPage::ensureDatabaseOpen()
 {
-    if (!m_db) {
-        qDebug() << "❌ Database manager is null!";
+    // Try primary database first
+    if (m_db && m_db->isOpen()) {
+        return true;
+    }
+
+    // Try the separate connection
+    if (m_dbConnection.isOpen()) {
+        return true;
+    }
+
+    // Try to reopen the separate connection
+    qDebug() << "⚠️ Reopening student dashboard database connection...";
+
+    if (QSqlDatabase::contains("student_dashboard_connection")) {
+        m_dbConnection = QSqlDatabase::database("student_dashboard_connection");
+    } else {
+        m_dbConnection = QSqlDatabase::addDatabase("QSQLITE", "student_dashboard_connection");
+    }
+
+    QString dbPath = QDir::currentPath() + "/ku_rfid.db";
+    m_dbConnection.setDatabaseName(dbPath);
+
+    if (m_dbConnection.open()) {
+        qDebug() << "✅ Student dashboard database reopened successfully";
+        return true;
+    } else {
+        qDebug() << "❌ Failed to reopen database:" << m_dbConnection.lastError().text();
+        return false;
+    }
+}
+
+bool StudentDashboardPage::executeQuery(QSqlQuery &query, const QString &sql)
+{
+    if (!ensureDatabaseOpen()) {
+        qDebug() << "❌ Database not open for query";
         return false;
     }
 
-    if (!m_db->isOpen()) {
-        qDebug() << "⚠️ Database is not open, attempting to reopen...";
-        m_db->initDatabase();
-        if (!m_db->isOpen()) {
-            qDebug() << "❌ Failed to reopen database!";
-            return false;
-        }
-        qDebug() << "✅ Database reopened successfully";
+    query = QSqlQuery(m_dbConnection);
+    if (!query.prepare(sql)) {
+        qDebug() << "❌ Failed to prepare query:" << query.lastError().text();
+        qDebug() << "   SQL:" << sql;
+        return false;
+    }
+    return true;
+}
+
+bool StudentDashboardPage::bindAndExecute(QSqlQuery &query)
+{
+    if (!query.exec()) {
+        qDebug() << "❌ Query execution failed:" << query.lastError().text();
+        return false;
     }
     return true;
 }
@@ -57,8 +107,6 @@ void StudentDashboardPage::refreshData()
         return;
     }
 
-    // If there's a current student, reload their data
-    // For now, just show waiting state
     ui->labelAvatar->setText("??");
     ui->labelStudentName->setText("Tap your RFID card");
     ui->labelStudentMeta->setText("to view your dashboard");
@@ -94,7 +142,6 @@ void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
 {
     qDebug() << "📱 Loading student dashboard for RFID:" << cardId;
 
-    // Ensure database is open
     if (!ensureDatabaseOpen()) {
         ui->labelAvatar->setText("❌");
         ui->labelStudentName->setText("Database error");
@@ -104,10 +151,23 @@ void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
         return;
     }
 
-    // Get student by RFID
-    Student student = m_db->getStudentByRFID(cardId);
+    // Get student by RFID using the separate connection
+    QSqlQuery query(m_dbConnection);
+    query.prepare("SELECT id, name, roll_no, rfid_card_id, balance, class_section, registration_date "
+                  "FROM students WHERE rfid_card_id = ?");
+    query.addBindValue(cardId);
 
-    if (student.id == -1) {
+    if (!query.exec()) {
+        qDebug() << "❌ Failed to query student:" << query.lastError().text();
+        ui->labelAvatar->setText("❌");
+        ui->labelStudentName->setText("Database error");
+        ui->labelStudentMeta->setText("Query failed");
+        ui->labelCardStatus->setText("❌ Error");
+        ui->labelFooterText->setText("❌ Database query failed");
+        return;
+    }
+
+    if (!query.next()) {
         qDebug() << "❌ Student not found for RFID:" << cardId;
         ui->labelAvatar->setText("❌");
         ui->labelStudentName->setText("Card not recognized");
@@ -117,9 +177,17 @@ void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
         return;
     }
 
+    Student student;
+    student.id = query.value("id").toInt();
+    student.name = query.value("name").toString();
+    student.rollNo = query.value("roll_no").toString();
+    student.rfidCardId = query.value("rfid_card_id").toString();
+    student.balance = query.value("balance").toInt();
+    student.classSection = query.value("class_section").toString();
+    student.registrationDate = query.value("registration_date").toString();
+
     qDebug() << "✅ Student found:" << student.name << "(ID:" << student.id << ")";
 
-    // Update UI with student data
     updateUI(student);
 }
 
@@ -168,7 +236,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
 
     // Get total classes (distinct dates)
     int totalClasses = 0;
-    QSqlQuery totalQuery;
+    QSqlQuery totalQuery(m_dbConnection);
     totalQuery.prepare("SELECT COUNT(DISTINCT date) FROM attendance");
     if (totalQuery.exec() && totalQuery.next()) {
         totalClasses = totalQuery.value(0).toInt();
@@ -178,7 +246,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
 
     // Get attended classes for this student
     int attended = 0;
-    QSqlQuery attQuery;
+    QSqlQuery attQuery(m_dbConnection);
     attQuery.prepare("SELECT COUNT(*) FROM attendance WHERE student_id = ?");
     attQuery.addBindValue(studentId);
     if (attQuery.exec() && attQuery.next()) {
@@ -190,7 +258,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
     // Get today's attendance status
     QString todayStatus = "Not marked";
     QString todayTime = "";
-    QSqlQuery todayQuery;
+    QSqlQuery todayQuery(m_dbConnection);
     todayQuery.prepare("SELECT time_in FROM attendance WHERE student_id = ? AND date = ?");
     todayQuery.addBindValue(studentId);
     todayQuery.addBindValue(QDate::currentDate().toString("yyyy-MM-dd"));
@@ -230,7 +298,14 @@ void StudentDashboardPage::updateBalance(int studentId)
 {
     if (!ensureDatabaseOpen()) return;
 
-    int balance = m_db->getStudentBalance(studentId);
+    int balance = 0;
+    QSqlQuery query(m_dbConnection);
+    query.prepare("SELECT balance FROM students WHERE id = ?");
+    query.addBindValue(studentId);
+    if (query.exec() && query.next()) {
+        balance = query.value(0).toInt();
+    }
+
     ui->sc3Value->setText(QString("Rs. %1").arg(balance));
     ui->sc3Sub->setText(QString("Balance updated %1").arg(QDate::currentDate().toString("MMM dd")));
 
@@ -248,8 +323,6 @@ void StudentDashboardPage::updateRecentTransactions(int studentId)
 {
     if (!ensureDatabaseOpen()) return;
 
-    QList<CafeteriaTransaction> transactions = m_db->getTransactionsByStudent(studentId);
-
     // Clear existing transaction rows
     ui->transName1->setText("—");
     ui->transDate1->setText("");
@@ -261,28 +334,40 @@ void StudentDashboardPage::updateRecentTransactions(int studentId)
     ui->transDate3->setText("");
     ui->transAmt3->setText("");
 
-    // Show up to 3 most recent transactions
-    int count = qMin(3, transactions.size());
+    QSqlQuery query(m_dbConnection);
+    query.prepare("SELECT item, amount, date, time FROM cafeteria_transactions "
+                  "WHERE student_id = ? ORDER BY date DESC, time DESC LIMIT 3");
+    query.addBindValue(studentId);
 
-    if (count > 0) {
-        ui->transName1->setText(transactions[0].item);
-        ui->transDate1->setText(transactions[0].date + ", " + transactions[0].time);
-        ui->transAmt1->setText("- Rs. " + QString::number(transactions[0].amount));
-        ui->transAmt1->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
+    if (!query.exec()) {
+        qDebug() << "❌ Failed to get transactions:" << query.lastError().text();
+        return;
     }
 
-    if (count > 1) {
-        ui->transName2->setText(transactions[1].item);
-        ui->transDate2->setText(transactions[1].date + ", " + transactions[1].time);
-        ui->transAmt2->setText("- Rs. " + QString::number(transactions[1].amount));
-        ui->transAmt2->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
-    }
+    int row = 0;
+    while (query.next() && row < 3) {
+        QString item = query.value("item").toString();
+        int amount = query.value("amount").toInt();
+        QString date = query.value("date").toString();
+        QString time = query.value("time").toString();
 
-    if (count > 2) {
-        ui->transName3->setText(transactions[2].item);
-        ui->transDate3->setText(transactions[2].date + ", " + transactions[2].time);
-        ui->transAmt3->setText("- Rs. " + QString::number(transactions[2].amount));
-        ui->transAmt3->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
+        if (row == 0) {
+            ui->transName1->setText(item);
+            ui->transDate1->setText(date + ", " + time);
+            ui->transAmt1->setText("- Rs. " + QString::number(amount));
+            ui->transAmt1->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
+        } else if (row == 1) {
+            ui->transName2->setText(item);
+            ui->transDate2->setText(date + ", " + time);
+            ui->transAmt2->setText("- Rs. " + QString::number(amount));
+            ui->transAmt2->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
+        } else if (row == 2) {
+            ui->transName3->setText(item);
+            ui->transDate3->setText(date + ", " + time);
+            ui->transAmt3->setText("- Rs. " + QString::number(amount));
+            ui->transAmt3->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
+        }
+        row++;
     }
 }
 
@@ -295,7 +380,7 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
 
     // Get today's transactions
     QList<CafeteriaTransaction> todayTransactions;
-    QSqlQuery query;
+    QSqlQuery query(m_dbConnection);
     query.prepare("SELECT item, amount, time FROM cafeteria_transactions "
                   "WHERE student_id = ? AND date = ? "
                   "ORDER BY time DESC");
@@ -312,7 +397,7 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
         }
     } else {
         qDebug() << "❌ Failed to get today's meals:" << query.lastError().text();
-    }//o
+    }
 
     // Update meal items
     int totalSpent = 0;
