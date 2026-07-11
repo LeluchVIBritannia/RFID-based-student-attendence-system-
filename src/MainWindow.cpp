@@ -2,6 +2,7 @@
 #include "LoginPage.h"
 #include "DashboardPage.h"
 #include "StudentDashboardPage.h"
+#include "SerialManager.h"
 
 #include <QScreen>
 #include <QGuiApplication>
@@ -18,6 +19,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
         qDebug() << "⚠️ Database not open, initializing...";
         m_db->initDatabase();
     }
+    m_db = DatabaseManager::instance();
+    qDebug() << "✅ Database manager created";
+
+#ifdef ENABLE_TEST_DATA
+    addManualTestData();
+#endif
 
     setWindowTitle("KU RFID — Student Attendance & Cafeteria System");
     setMinimumSize(1100, 700);
@@ -50,6 +57,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(m_loginPage, &LoginPage::loginSuccess, this, &MainWindow::goToDashboard);
     connect(m_dashboardPage, &DashboardPage::logoutRequested, this, &MainWindow::goToLogin);
 
+    // --- RFID wiring ---
+    m_serial = new SerialManager(this);
+    connect(m_serial, &SerialManager::cardScanned, this, &MainWindow::handleCardScanned);
+
+    // --- idle timeout back to login/kiosk-wait screen ---
+    m_idleTimer = new QTimer(this);
+    m_idleTimer->setSingleShot(true);
+    m_idleTimer->setInterval(20000); // 20s, tune as needed
+    connect(m_idleTimer, &QTimer::timeout, this, &MainWindow::handleIdleTimeout);
+
     // Start with login page
     m_stack->setCurrentIndex(LOGIN);
 
@@ -71,6 +88,7 @@ void MainWindow::goToDashboard()
 void MainWindow::goToLogin()
 {
     qDebug() << "🔄 Going to login";
+    m_idleTimer->stop();
     m_stack->setCurrentIndex(LOGIN);
 }
 
@@ -86,4 +104,35 @@ void MainWindow::showStudentDashboard(const QString &rfidCardId)
 
     m_studentDashboardPage->loadStudentByCardId(rfidCardId);
     m_stack->setCurrentIndex(STUDENT_DASHBOARD);
+}
+    m_idleTimer->start();
+}
+
+void MainWindow::handleCardScanned(const QString &uid)
+{
+    qDebug() << "Card scanned:" << uid;
+
+    // Ignore kiosk scans while admin is working in the dashboard
+    if (m_stack->currentIndex() == DASHBOARD) {
+        qDebug() << "Ignoring kiosk card scan — admin dashboard is active";
+        return;
+    }
+
+    Student student = m_db->getStudentByRFID(uid);
+    if (student.id == -1) {
+        qDebug() << "Unrecognized card:" << uid;
+        // TODO: surface this on-screen instead of just logging it
+        return;
+    }
+
+    m_db->recordAttendance(student.id, "Morning");
+    showStudentDashboard(uid);
+}
+
+void MainWindow::handleIdleTimeout()
+{
+    if (m_stack->currentIndex() == STUDENT_DASHBOARD) {
+        qDebug() << "⏰ Kiosk timeout reached. Returning to Login screen.";
+        m_stack->setCurrentIndex(LOGIN);
+    }
 }

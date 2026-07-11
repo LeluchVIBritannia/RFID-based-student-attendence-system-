@@ -3,7 +3,7 @@
 
 SerialManager::SerialManager(QObject *parent) : QObject(parent)
 {
-    serial.setPortName("COM4");
+    serial.setPortName("/dev/ttyUSB0");
     serial.setBaudRate(QSerialPort::Baud9600); //dont change
 
     if(serial.open(QIODevice::ReadOnly))

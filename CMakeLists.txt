@@ -24,7 +24,7 @@ set(SOURCES
     src/RegisterCardPage.cpp
     src/ScanTerminalPage.cpp
     src/StudentDashboardPage.cpp
-    src/SerialMangaer.cpp
+    src/SerialManager.cpp
     src/database.cpp   # <-- ADD THIS LINE
     src/testdata.cpp   # <-- ADD THIS LINE
 )

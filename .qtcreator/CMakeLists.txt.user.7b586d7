@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 19.0.2, 2026-07-11T08:47:55. -->
+<!-- Written by QtCreator 19.0.2, 2026-07-11T06:33:08. -->
+<!-- Written by QtCreator 19.0.2, 2026-07-08T13:06:03. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{c935d543-886a-4d19-95b5-7fc2fe7231e2}</value>
+  <value type="QByteArray">{7b586d7a-a89a-4ca3-8d88-146ce393f40f}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -86,10 +87,6 @@
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
     <value type="bool" key="ClangTools.UseGlobalSettings">true</value>
    </valuemap>
-   <valuemap type="QVariantMap" key="ClangdSettings">
-    <value type="bool" key="blockIndexing">false</value>
-    <value type="bool" key="useGlobalSettings">true</value>
-   </valuemap>
    <value type="int" key="RcSync">0</value>
   </valuemap>
  </data>
@@ -98,9 +95,9 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="DeviceType">Desktop</value>
    <value type="bool" key="HasPerBcDcs">true</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{62eb2488-199a-4489-8003-08a31e6bb36f}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 6.11.1 MinGW 64-bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 6.11.1 MinGW 64-bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt6.6111.win64_mingw_kit</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
@@ -113,8 +110,7 @@
 -DCMAKE_COLOR_DIAGNOSTICS:BOOL=ON
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
--DCMAKE_GENERATOR:STRING=Ninja
--DCMAKE_MAKE_PROGRAM:STRING=/usr/bin/ninja
+-DCMAKE_GENERATOR:STRING=MinGW Makefiles
 -DCMAKE_PREFIX_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=%{BuildConfig:BuildDirectory:NativeFilePath}/.qtcreator/cmake-helper/qtcreator-project.cmake
 -DQT_CREATOR_ENABLE_MAINTENANCE_TOOL_PROVIDER:BOOL=ON
@@ -122,7 +118,7 @@
 -DQT_ENABLE_QML_DEBUG:BOOL=%{Qt:QT_ENABLE_QML_DEBUG}
 -DQT_QMAKE_EXECUTABLE:FILEPATH=%{Qt:qmakeExecutable}</value>
     <value type="int" key="EnableQmlDebugging">0</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">./build/%{Asciify:%{Kit:FileSystemName}-%{BuildConfig:Name}}</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">.\build\%{Asciify:%{Kit:FileSystemName}-%{BuildConfig:Name}}</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.BuildPreset"></value>
@@ -214,11 +210,6 @@
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ApplicationManagerPlugin.Deploy.Configuration</value>
     </valuemap>
     <value type="qlonglong" key="ProjectExplorer.Target.DeployConfigurationCount">2</value>
-    <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings">
-     <value type="bool" key="AndroidBuildTargetDirSupport">false</value>
-     <valuelist type="QVariantList" key="ApplicationmanagerPackageTargets"/>
-     <value type="bool" key="UseAndroidBuildTargetDir">false</value>
-    </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
      <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
      <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
@@ -600,6 +591,7 @@
      <value type="bool" key="ProjectExplorer.DeployConfiguration.CustomDataEnabled">false</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ApplicationManagerPlugin.Deploy.Configuration</value>
     </valuemap>
+    <value type="qlonglong" key="ProjectExplorer.Target.DeployConfigurationCount">2</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
      <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
      <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
@@ -610,20 +602,19 @@
      <value type="int" key="PE.EnvironmentAspect.Base">2</value>
      <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
      <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
-     <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph dwarf,4096 -F 250</value>
+     <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.</value>
-     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">rfid_system</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
+     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
      <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
      <value type="QString" key="ProjectExplorer.RunConfiguration.UniqueId"></value>
      <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
-     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
      <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
      <value type="QString" key="RunConfiguration.WorkingDirectory.default">%{RunConfig:Executable:Path}</value>
     </valuemap>
     <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
    </valuemap>
-   <value type="qlonglong" key="ProjectExplorer.Target.BuildConfigurationCount">1</value>
+   <value type="qlonglong" key="ProjectExplorer.Target.BuildConfigurationCount">4</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">0</value>
@@ -682,14 +673,13 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="bool" key="PE.EnvironmentAspect.PrintOnRun">false</value>
-    <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph dwarf,4096 -F 250</value>
+    <value type="QString" key="PerfRecordArgsId">-e cpu-cycles --call-graph &quot;dwarf,4096&quot; -F 250</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">rfid_system</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">false</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.UniqueId"></value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
-    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">%{RunConfig:Executable:Path}</value>
    </valuemap>
