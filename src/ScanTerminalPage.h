@@ -23,6 +23,7 @@ private:
     void wireButtons();
     void setState(const QString &icon, const QString &msg, const QString &detail,
                   const QString &color, const QString &borderColor);
+    void navigateToStudentDashboard(const QString &rfidCardId);  // ADD THIS
 
     Ui::ScanTerminalPage *ui;
     DatabaseManager *m_db;

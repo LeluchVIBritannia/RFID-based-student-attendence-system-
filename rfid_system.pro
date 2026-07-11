@@ -1,7 +1,5 @@
-QT       += core gui widgets sql
-
+QT       += core gui widgets sql serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 CONFIG   += c++17
 TARGET    = rfid_system
 TEMPLATE  = app
@@ -20,6 +18,8 @@ SOURCES += \
     src/ReportsPage.cpp \
     src/RegisterCardPage.cpp \
     src/ScanTerminalPage.cpp \
+    src/StudentDashboardPage.cpp \
+    src/SerialManager.cpp \
     src/testdata.cpp
 
 HEADERS += \
@@ -33,6 +33,8 @@ HEADERS += \
     src/ReportsPage.h \
     src/RegisterCardPage.h \
     src/ScanTerminalPage.h \
+    src/StudentDashboardPage.h \
+    src/SerialManager.h \
     src/database.h \
     src/testdata.h
 
@@ -45,7 +47,8 @@ FORMS += \
     ui/StudentsPage.ui \
     ui/ReportsPage.ui \
     ui/RegisterCardPage.ui \
-    ui/ScanTerminalPage.ui
+    ui/ScanTerminalPage.ui \
+    ui/StudentDashboardPage.ui
 
 # Add this after QT += core widgets sql
 INCLUDEPATH += $$[QT_INSTALL_HEADERS]
