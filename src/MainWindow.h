@@ -7,7 +7,6 @@
 
 class LoginPage;
 class DashboardPage;
-class StudentDashboardPage;  // ADD THIS
 class StudentDashboardPage;
 class SerialManager;
 
@@ -15,9 +14,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    enum Page { LOGIN = 0, DASHBOARD = 1, STUDENT_DASHBOARD = 2 };  // ADD STUDENT_DASHBOARD
-
-    enum Page { LOGIN = 0, DASHBOARD = 1, STUDENT_VIEW = 2 };
+    enum Page { LOGIN = 0, DASHBOARD = 1, STUDENT_DASHBOARD = 2 };
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -36,12 +33,8 @@ private:
     DashboardPage       *m_dashboardPage;
     StudentDashboardPage *m_studentDashboardPage;  // ADD THIS
     DatabaseManager     *m_db;
-    QStackedWidget       *m_stack;
-    LoginPage            *m_loginPage;
-    DashboardPage        *m_dashboardPage;
     StudentDashboardPage *m_studentViewPage;
     SerialManager        *m_serial;
     QTimer               *m_idleTimer;
-    DatabaseManager      *m_db;
 };
 #endif
