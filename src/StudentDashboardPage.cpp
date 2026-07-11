@@ -17,6 +17,12 @@ StudentDashboardPage::StudentDashboardPage(QWidget *parent)
 
     // Show waiting state
     ui->labelFooterText->setText("Waiting for card tap...");
+
+    // Ensure database is open
+    if (m_db && !m_db->isOpen()) {
+        qDebug() << "⚠️ Database not open, reinitializing...";
+        m_db->initDatabase();
+    }
 }
 
 StudentDashboardPage::~StudentDashboardPage()
@@ -24,8 +30,33 @@ StudentDashboardPage::~StudentDashboardPage()
     delete ui;
 }
 
+// Helper function to ensure database is open
+bool StudentDashboardPage::ensureDatabaseOpen()
+{
+    if (!m_db) {
+        qDebug() << "❌ Database manager is null!";
+        return false;
+    }
+
+    if (!m_db->isOpen()) {
+        qDebug() << "⚠️ Database is not open, attempting to reopen...";
+        m_db->initDatabase();
+        if (!m_db->isOpen()) {
+            qDebug() << "❌ Failed to reopen database!";
+            return false;
+        }
+        qDebug() << "✅ Database reopened successfully";
+    }
+    return true;
+}
+
 void StudentDashboardPage::refreshData()
 {
+    if (!ensureDatabaseOpen()) {
+        ui->labelFooterText->setText("❌ Database connection failed");
+        return;
+    }
+
     // If there's a current student, reload their data
     // For now, just show waiting state
     ui->labelAvatar->setText("??");
@@ -61,8 +92,14 @@ void StudentDashboardPage::refreshData()
 
 void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
 {
-    if (!m_db || !m_db->isOpen()) {
-        qDebug() << "❌ Database not available!";
+    qDebug() << "📱 Loading student dashboard for RFID:" << cardId;
+
+    // Ensure database is open
+    if (!ensureDatabaseOpen()) {
+        ui->labelAvatar->setText("❌");
+        ui->labelStudentName->setText("Database error");
+        ui->labelStudentMeta->setText("Please contact administrator");
+        ui->labelCardStatus->setText("❌ DB Error");
         ui->labelFooterText->setText("❌ Database connection failed");
         return;
     }
@@ -127,12 +164,16 @@ void StudentDashboardPage::updateUI(const Student &student)
 
 void StudentDashboardPage::updateAttendanceStats(int studentId)
 {
+    if (!ensureDatabaseOpen()) return;
+
     // Get total classes (distinct dates)
     int totalClasses = 0;
     QSqlQuery totalQuery;
     totalQuery.prepare("SELECT COUNT(DISTINCT date) FROM attendance");
     if (totalQuery.exec() && totalQuery.next()) {
         totalClasses = totalQuery.value(0).toInt();
+    } else {
+        qDebug() << "❌ Failed to get total classes:" << totalQuery.lastError().text();
     }
 
     // Get attended classes for this student
@@ -142,6 +183,8 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
     attQuery.addBindValue(studentId);
     if (attQuery.exec() && attQuery.next()) {
         attended = attQuery.value(0).toInt();
+    } else {
+        qDebug() << "❌ Failed to get attendance for student:" << attQuery.lastError().text();
     }
 
     // Get today's attendance status
@@ -185,6 +228,8 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
 
 void StudentDashboardPage::updateBalance(int studentId)
 {
+    if (!ensureDatabaseOpen()) return;
+
     int balance = m_db->getStudentBalance(studentId);
     ui->sc3Value->setText(QString("Rs. %1").arg(balance));
     ui->sc3Sub->setText(QString("Balance updated %1").arg(QDate::currentDate().toString("MMM dd")));
@@ -201,6 +246,8 @@ void StudentDashboardPage::updateBalance(int studentId)
 
 void StudentDashboardPage::updateRecentTransactions(int studentId)
 {
+    if (!ensureDatabaseOpen()) return;
+
     QList<CafeteriaTransaction> transactions = m_db->getTransactionsByStudent(studentId);
 
     // Clear existing transaction rows
@@ -241,6 +288,8 @@ void StudentDashboardPage::updateRecentTransactions(int studentId)
 
 void StudentDashboardPage::updateTodayMeals(int studentId)
 {
+    if (!ensureDatabaseOpen()) return;
+
     QDate today = QDate::currentDate();
     QString todayStr = today.toString("yyyy-MM-dd");
 
@@ -261,7 +310,9 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
             trans.time = query.value("time").toString();
             todayTransactions.append(trans);
         }
-    }
+    } else {
+        qDebug() << "❌ Failed to get today's meals:" << query.lastError().text();
+    }//o
 
     // Update meal items
     int totalSpent = 0;

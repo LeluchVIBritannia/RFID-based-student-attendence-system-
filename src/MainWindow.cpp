@@ -7,9 +7,18 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QDebug>
-
+//o
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    // Initialize database FIRST
+    m_db = DatabaseManager::instance();
+    qDebug() << "✅ Database manager created";
+
+    // Ensure database is open
+    if (!m_db->isOpen()) {
+        qDebug() << "⚠️ Database not open, initializing...";
+        m_db->initDatabase();
+    }
     m_db = DatabaseManager::instance();
     qDebug() << "✅ Database manager created";
 
@@ -86,8 +95,16 @@ void MainWindow::goToLogin()
 void MainWindow::showStudentDashboard(const QString &rfidCardId)
 {
     qDebug() << "🔄 Showing student dashboard for RFID:" << rfidCardId;
+
+    // Ensure database is open before showing dashboard
+    if (!m_db->isOpen()) {
+        qDebug() << "⚠️ Database not open, reinitializing...";
+        m_db->initDatabase();
+    }
+
     m_studentDashboardPage->loadStudentByCardId(rfidCardId);
     m_stack->setCurrentIndex(STUDENT_DASHBOARD);
+}
     m_idleTimer->start();
 }
 
