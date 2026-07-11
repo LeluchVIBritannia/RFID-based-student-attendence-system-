@@ -168,7 +168,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
 
     // Get total classes (distinct dates)
     int totalClasses = 0;
-    QSqlQuery totalQuery;
+    QSqlQuery totalQuery(m_db->getDatabase());
     totalQuery.prepare("SELECT COUNT(DISTINCT date) FROM attendance");
     if (totalQuery.exec() && totalQuery.next()) {
         totalClasses = totalQuery.value(0).toInt();
@@ -178,7 +178,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
 
     // Get attended classes for this student
     int attended = 0;
-    QSqlQuery attQuery;
+    QSqlQuery attQuery(m_db->getDatabase());
     attQuery.prepare("SELECT COUNT(*) FROM attendance WHERE student_id = ?");
     attQuery.addBindValue(studentId);
     if (attQuery.exec() && attQuery.next()) {
@@ -190,7 +190,7 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
     // Get today's attendance status
     QString todayStatus = "Not marked";
     QString todayTime = "";
-    QSqlQuery todayQuery;
+    QSqlQuery todayQuery(m_db->getDatabase());
     todayQuery.prepare("SELECT time_in FROM attendance WHERE student_id = ? AND date = ?");
     todayQuery.addBindValue(studentId);
     todayQuery.addBindValue(QDate::currentDate().toString("yyyy-MM-dd"));
@@ -295,7 +295,7 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
 
     // Get today's transactions
     QList<CafeteriaTransaction> todayTransactions;
-    QSqlQuery query;
+    QSqlQuery query(m_db->getDatabase());
     query.prepare("SELECT item, amount, time FROM cafeteria_transactions "
                   "WHERE student_id = ? AND date = ? "
                   "ORDER BY time DESC");
@@ -312,7 +312,7 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
         }
     } else {
         qDebug() << "❌ Failed to get today's meals:" << query.lastError().text();
-    }//o
+    }
 
     // Update meal items
     int totalSpent = 0;

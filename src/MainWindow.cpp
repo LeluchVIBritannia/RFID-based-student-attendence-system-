@@ -104,7 +104,6 @@ void MainWindow::showStudentDashboard(const QString &rfidCardId)
 
     m_studentDashboardPage->loadStudentByCardId(rfidCardId);
     m_stack->setCurrentIndex(STUDENT_DASHBOARD);
-}
     m_idleTimer->start();
 }
 
