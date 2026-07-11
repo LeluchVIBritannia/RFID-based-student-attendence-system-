@@ -1,5 +1,5 @@
 #ifndef STUDENTDASHBOARDPAGE_H
-#define STUDENTDASHBOARDPAGE_H
+#define STUDDENTDASHBOARDPAGE_H
 
 #include <QWidget>
 #include "database.h"
@@ -14,11 +14,12 @@ public:
     explicit StudentDashboardPage(QWidget *parent = nullptr);
     ~StudentDashboardPage();
 
+    // Call this when a card is tapped/scanned to refresh the view with
+    // that student's live data from the database
     void loadStudentByCardId(const QString &cardId);
     void refreshData();
 
 private:
-    bool ensureDatabaseOpen();  // ADD THIS
     void updateUI(const Student &student);
     void updateAttendanceStats(int studentId);
     void updateBalance(int studentId);
