@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include "LoginPage.h"
 #include "DashboardPage.h"
-#include "StudentDashboardPage.h"  // ADD THIS
+#include "StudentDashboardPage.h"
 
 #include <QScreen>
 #include <QGuiApplication>
@@ -9,9 +9,15 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    // Initialize database
+    // Initialize database FIRST
     m_db = DatabaseManager::instance();
     qDebug() << "✅ Database manager created";
+
+    // Ensure database is open
+    if (!m_db->isOpen()) {
+        qDebug() << "⚠️ Database not open, initializing...";
+        m_db->initDatabase();
+    }
 
     setWindowTitle("KU RFID — Student Attendance & Cafeteria System");
     setMinimumSize(1100, 700);
@@ -30,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     // Create all pages
     m_loginPage = new LoginPage(this);
     m_dashboardPage = new DashboardPage(this);
-    m_studentDashboardPage = new StudentDashboardPage(this);  // ADD THIS
+    m_studentDashboardPage = new StudentDashboardPage(this);
 
     // Pass database to dashboard page
     m_dashboardPage->setDatabase(m_db);
@@ -68,10 +74,16 @@ void MainWindow::goToLogin()
     m_stack->setCurrentIndex(LOGIN);
 }
 
-// NEW: Show student dashboard when RFID is scanned
 void MainWindow::showStudentDashboard(const QString &rfidCardId)
 {
     qDebug() << "🔄 Showing student dashboard for RFID:" << rfidCardId;
+
+    // Ensure database is open before showing dashboard
+    if (!m_db->isOpen()) {
+        qDebug() << "⚠️ Database not open, reinitializing...";
+        m_db->initDatabase();
+    }
+
     m_studentDashboardPage->loadStudentByCardId(rfidCardId);
     m_stack->setCurrentIndex(STUDENT_DASHBOARD);
 }
