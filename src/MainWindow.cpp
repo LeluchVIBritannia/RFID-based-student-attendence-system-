@@ -6,7 +6,7 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QDebug>
-
+//o
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     // Initialize database FIRST

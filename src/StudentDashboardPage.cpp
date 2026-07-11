@@ -312,7 +312,7 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
         }
     } else {
         qDebug() << "❌ Failed to get today's meals:" << query.lastError().text();
-    }
+    }//o
 
     // Update meal items
     int totalSpent = 0;
