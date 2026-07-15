@@ -3,7 +3,12 @@
  <class>StudentDashboardPage</class>
  <widget class="QWidget" name="StudentDashboardPage">
   <property name="geometry">
-   <rect><x>0</x><y>0</y><width>1000</width><height>720</height></rect>
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>720</height>
+   </rect>
   </property>
   <property name="windowTitle">
    <string>StudentDashboardPage</string>
@@ -11,381 +16,542 @@
   <property name="styleSheet">
    <string notr="true">QWidget#StudentDashboardPage { background-color: #1C1C2E; }</string>
   </property>
-
   <layout class="QVBoxLayout" name="rootLayout">
-   <property name="leftMargin"><number>28</number></property>
-   <property name="topMargin"><number>24</number></property>
-   <property name="rightMargin"><number>28</number></property>
-   <property name="bottomMargin"><number>24</number></property>
-   <property name="spacing"><number>16</number></property>
-
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="leftMargin">
+    <number>28</number>
+   </property>
+   <property name="topMargin">
+    <number>24</number>
+   </property>
+   <property name="rightMargin">
+    <number>28</number>
+   </property>
+   <property name="bottomMargin">
+    <number>24</number>
+   </property>
    <item>
-    <widget class="QFrame" name="profileCard">
-     <property name="minimumHeight"><number>90</number></property>
-     <property name="styleSheet">
-      <string notr="true">QFrame#profileCard { background-color:#24243A; border:1px solid #3A3A5A; border-radius:16px; }</string>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <layout class="QHBoxLayout" name="profileLayout">
-      <property name="leftMargin"><number>24</number></property>
-      <property name="topMargin"><number>16</number></property>
-      <property name="rightMargin"><number>24</number></property>
-      <property name="bottomMargin"><number>16</number></property>
-      <property name="spacing"><number>14</number></property>
-
-      <item>
-       <widget class="QLabel" name="labelAvatar">
-        <property name="minimumSize"><size><width>56</width><height>56</height></size></property>
-        <property name="maximumSize"><size><width>56</width><height>56</height></size></property>
-        <property name="text"><string>KS</string></property>
-        <property name="alignment"><set>Qt::AlignCenter</set></property>
-        <property name="styleSheet">
-         <string notr="true">background-color:#1E2E4A; color:#3498DB; border-radius:28px; font-size:18px; font-weight:600;</string>
-        </property>
-       </widget>
-      </item>
-
-      <item>
-       <layout class="QVBoxLayout" name="nameCol">
-        <property name="spacing"><number>2</number></property>
-        <item>
-         <widget class="QLabel" name="labelStudentName">
-          <property name="text"><string>Krimud Sainju</string></property>
-          <property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:17px; font-weight:600; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="labelStudentMeta">
-          <property name="text"><string>Roll No. 08  ·  CSE-I/II  ·  Kathmandu University</string></property>
-          <property name="styleSheet"><string notr="true">color:#8080A8; font-size:13px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-
-      <item>
-       <spacer name="profileSpacer">
-        <property name="orientation"><enum>Qt::Horizontal</enum></property>
-        <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
-       </spacer>
-      </item>
-
-      <item>
-       <widget class="QLabel" name="labelCardStatus">
-        <property name="text"><string>✓  Card active</string></property>
-        <property name="minimumHeight"><number>30</number></property>
-        <property name="styleSheet">
-         <string notr="true">background-color:#1E3D2B; color:#2ECC71; border-radius:15px; padding:0 16px; font-size:13px; font-weight:600;</string>
-        </property>
-       </widget>
-      </item>
-
-     </layout>
+     <!-- ======== INFO PAGE (index 0) ======== -->
+     <widget class="QWidget" name="infoPage">
+      <layout class="QVBoxLayout" name="infoLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="profileCard">
+         <property name="styleSheet">
+          <string notr="true">QFrame#profileCard { background-color:#24243A; border:1px solid #3A3A5A; border-radius:16px; }</string>
+         </property>
+         <layout class="QVBoxLayout" name="profileLayout">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>14</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="profileTopRow">
+            <item>
+             <widget class="QLabel" name="labelAvatar">
+              <property name="minimumSize">
+               <size>
+                <width>56</width>
+                <height>56</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>56</width>
+                <height>56</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color:#1E2E4A; color:#3498DB; border-radius:28px; font-size:18px; font-weight:600;</string>
+              </property>
+              <property name="text">
+               <string>KS</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="nameCol">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelStudentName">
+                <property name="styleSheet">
+                 <string notr="true">color:#E8E8F0; font-size:17px; font-weight:600; background:transparent; border:none;</string>
+                </property>
+                <property name="text">
+                 <string>Krimud Sainju</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="labelStudentMeta">
+                <property name="styleSheet">
+                 <string notr="true">color:#8080A8; font-size:13px; background:transparent; border:none;</string>
+                </property>
+                <property name="text">
+                 <string>Roll No. 08  ·  CSE-I/II  ·  Kathmandu University</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="profileSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelCardStatus">
+              <property name="styleSheet">
+               <string notr="true">background-color:#1E3D2B; color:#2ECC71; border-radius:15px; padding:0 16px; font-size:13px; font-weight:600;</string>
+              </property>
+              <property name="text">
+               <string>✓  Card active</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnBuyFood">
+            <property name="text">
+             <string>🍽  Buy Food</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton { background-color: #5B7FFF; color: white; border: none; border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 500; } QPushButton:hover { background-color: #4A6BE0; }</string>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>30</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="statRow">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="statCardAttendanceToday">
+           <property name="styleSheet">
+            <string notr="true">QFrame#statCardAttendanceToday{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #2ECC71;}</string>
+           </property>
+           <layout class="QVBoxLayout" name="sc1Layout">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sc1Label">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>ATTENDANCE TODAY</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc1Value">
+              <property name="styleSheet">
+               <string notr="true">color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>Marked</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc1Sub">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>09:02 AM</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="statCardAttendancePct">
+           <property name="styleSheet">
+            <string notr="true">QFrame#statCardAttendancePct{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #3498DB;}</string>
+           </property>
+           <layout class="QVBoxLayout" name="sc2Layout">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sc2Label">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>ATTENDANCE %</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc2Value">
+              <property name="styleSheet">
+               <string notr="true">color:#E8E8F0; font-size:24px; font-weight:700; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>87%</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc2Sub">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>27 of 31 classes</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="statCardBalance">
+           <property name="styleSheet">
+            <string notr="true">QFrame#statCardBalance{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #F39C12;}</string>
+           </property>
+           <layout class="QVBoxLayout" name="sc3Layout">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sc3Label">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>CAFETERIA BALANCE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc3Value">
+              <property name="styleSheet">
+               <string notr="true">color:#E8E8F0; font-size:24px; font-weight:700; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>Rs. 1,200</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sc3Sub">
+              <property name="styleSheet">
+               <string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string>
+              </property>
+              <property name="text">
+               <string>Last topped up Jun 12</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QFrame" name="footerBar">
+         <property name="styleSheet">
+          <string notr="true">QFrame#footerBar{background-color:#24243A;border-radius:12px;}</string>
+         </property>
+         <layout class="QHBoxLayout" name="footerLayout">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelFooterIcon">
+            <property name="styleSheet">
+             <string notr="true">font-size:18px; background:transparent; border:none;</string>
+            </property>
+            <property name="text">
+             <string>📶</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelFooterText">
+            <property name="styleSheet">
+             <string notr="true">color:#8080A8; font-size:13px; background:transparent; border:none;</string>
+            </property>
+            <property name="text">
+             <string>Card ID A1B2C3D4 · Tap your card again anytime to refresh this view</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="bottomSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <!-- ======== FOOD PURCHASE PAGE (index 1) ======== -->
+     <widget class="QWidget" name="foodPage">
+      <layout class="QVBoxLayout" name="foodLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="foodCard">
+         <property name="styleSheet">
+          <string notr="true">QFrame#foodCard { background-color:#24243A; border:1px solid #3A3A5A; border-radius:16px; }</string>
+         </property>
+         <layout class="QVBoxLayout" name="foodCardLayout">
+          <property name="spacing">
+           <number>16</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>24</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>24</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelFoodTitle">
+            <property name="styleSheet">
+             <string notr="true">color:#E8E8F0; font-size:20px; font-weight:600; background:transparent; border:none;</string>
+            </property>
+            <property name="text">
+             <string>🍽  Today's Meals</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableTodayMeals">
+            <property name="styleSheet">
+             <string notr="true">QTableWidget { background-color: #1C1C2E; color: #E8E8F0; border: 1px solid #3A3A5A; border-radius: 8px; gridline-color: #2E2E4E; } QHeaderView::section { background-color: #24243A; color: #8080A8; padding: 4px; border: none; } QTableWidget::item { padding: 6px; }</string>
+            </property>
+            <property name="columnCount">
+             <number>3</number>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <column>
+             <property name="text">
+              <string>Item</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Time</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Amount</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelFoodMessage">
+            <property name="styleSheet">
+             <string notr="true">color:#8080A8; font-size:14px; background:transparent; border:none;</string>
+            </property>
+            <property name="text">
+             <string>No purchases today</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="foodButtonRow">
+            <item>
+             <widget class="QPushButton" name="btnBackToInfo">
+              <property name="text">
+               <string>← Back</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton { background: transparent; color: #8080A8; border: none; font-size: 14px; } QPushButton:hover { color: #E8E8F0; }</string>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnPurchase">
+              <property name="text">
+               <string>Purchase (Rs. 100)</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton { background-color: #2ECC71; color: #1C1C2E; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 600; } QPushButton:hover { background-color: #27AE60; }</string>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-
-   <item>
-    <layout class="QHBoxLayout" name="statRow">
-     <property name="spacing"><number>12</number></property>
-
-     <item>
-      <widget class="QFrame" name="statCardAttendanceToday">
-       <property name="styleSheet"><string notr="true">QFrame#statCardAttendanceToday{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #2ECC71;}</string></property>
-       <layout class="QVBoxLayout" name="sc1Layout">
-        <property name="leftMargin"><number>18</number></property>
-        <property name="topMargin"><number>16</number></property>
-        <property name="rightMargin"><number>18</number></property>
-        <property name="bottomMargin"><number>16</number></property>
-        <property name="spacing"><number>5</number></property>
-        <item>
-         <widget class="QLabel" name="sc1Label">
-          <property name="text"><string>ATTENDANCE TODAY</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc1Value">
-          <property name="text"><string>Marked</string></property>
-          <property name="styleSheet"><string notr="true">color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc1Sub">
-          <property name="text"><string>09:02 AM</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-
-     <item>
-      <widget class="QFrame" name="statCardAttendancePct">
-       <property name="styleSheet"><string notr="true">QFrame#statCardAttendancePct{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #3498DB;}</string></property>
-       <layout class="QVBoxLayout" name="sc2Layout">
-        <property name="leftMargin"><number>18</number></property>
-        <property name="topMargin"><number>16</number></property>
-        <property name="rightMargin"><number>18</number></property>
-        <property name="bottomMargin"><number>16</number></property>
-        <property name="spacing"><number>5</number></property>
-        <item>
-         <widget class="QLabel" name="sc2Label">
-          <property name="text"><string>ATTENDANCE %</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc2Value">
-          <property name="text"><string>87%</string></property>
-          <property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:24px; font-weight:700; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc2Sub">
-          <property name="text"><string>27 of 31 classes</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-
-     <item>
-      <widget class="QFrame" name="statCardBalance">
-       <property name="styleSheet"><string notr="true">QFrame#statCardBalance{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;border-left:4px solid #F39C12;}</string></property>
-       <layout class="QVBoxLayout" name="sc3Layout">
-        <property name="leftMargin"><number>18</number></property>
-        <property name="topMargin"><number>16</number></property>
-        <property name="rightMargin"><number>18</number></property>
-        <property name="bottomMargin"><number>16</number></property>
-        <property name="spacing"><number>5</number></property>
-        <item>
-         <widget class="QLabel" name="sc3Label">
-          <property name="text"><string>CAFETERIA BALANCE</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; font-weight:600; letter-spacing:1px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc3Value">
-          <property name="text"><string>Rs. 1,200</string></property>
-          <property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:24px; font-weight:700; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="sc3Sub">
-          <property name="text"><string>Last topped up Jun 12</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-
-    </layout>
-   </item>
-
-   <item>
-    <layout class="QHBoxLayout" name="middleRow">
-     <property name="spacing"><number>12</number></property>
-
-     <item>
-      <widget class="QFrame" name="mealCard">
-       <property name="styleSheet"><string notr="true">QFrame#mealCard{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;}</string></property>
-       <layout class="QVBoxLayout" name="mealLayout">
-        <property name="leftMargin"><number>20</number></property>
-        <property name="topMargin"><number>18</number></property>
-        <property name="rightMargin"><number>20</number></property>
-        <property name="bottomMargin"><number>18</number></property>
-        <property name="spacing"><number>4</number></property>
-
-        <item>
-         <widget class="QLabel" name="labelMealTitle">
-          <property name="text"><string>🍽  Today's meal</string></property>
-          <property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:15px; font-weight:600; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-
-        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeType"><enum>QSizePolicy::Fixed</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>8</height></size></property></spacer></item>
-
-        <item>
-         <widget class="QFrame" name="mealDivider1">
-          <property name="frameShape"><enum>QFrame::HLine</enum></property>
-          <property name="styleSheet"><string notr="true">background-color:#2E2E4E; border:none;</string></property>
-          <property name="maximumHeight"><number>1</number></property>
-         </widget>
-        </item>
-
-        <item>
-         <layout class="QHBoxLayout" name="mealRow1">
-          <property name="topMargin"><number>10</number></property>
-          <property name="bottomMargin"><number>10</number></property>
-          <item><widget class="QLabel" name="mealItem1"><property name="text"><string>Lunch set</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer></item>
-          <item><widget class="QLabel" name="mealTime1"><property name="text"><string>12:05 PM</string></property><property name="styleSheet"><string notr="true">color:#6060A0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-         </layout>
-        </item>
-
-        <item>
-         <widget class="QFrame" name="mealDivider2">
-          <property name="frameShape"><enum>QFrame::HLine</enum></property>
-          <property name="styleSheet"><string notr="true">background-color:#2E2E4E; border:none;</string></property>
-          <property name="maximumHeight"><number>1</number></property>
-         </widget>
-        </item>
-
-        <item>
-         <layout class="QHBoxLayout" name="mealRow2">
-          <property name="topMargin"><number>10</number></property>
-          <property name="bottomMargin"><number>4</number></property>
-          <item><widget class="QLabel" name="mealItem2"><property name="text"><string>Tea + snacks</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer></item>
-          <item><widget class="QLabel" name="mealTime2"><property name="text"><string>10:30 AM</string></property><property name="styleSheet"><string notr="true">color:#6060A0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-         </layout>
-        </item>
-
-        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeType"><enum>QSizePolicy::Fixed</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>6</height></size></property></spacer></item>
-
-        <item>
-         <widget class="QLabel" name="labelMealFooter">
-          <property name="text"><string>2 purchases · Rs. 245 spent today</string></property>
-          <property name="styleSheet"><string notr="true">color:#6060A0; font-size:12px; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-
-        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>10</height></size></property></spacer></item>
-
-       </layout>
-      </widget>
-     </item>
-
-     <item>
-      <widget class="QFrame" name="transactionsCard">
-       <property name="styleSheet"><string notr="true">QFrame#transactionsCard{background-color:#24243A;border:1px solid #3A3A5A;border-radius:14px;}</string></property>
-       <layout class="QVBoxLayout" name="transLayout">
-        <property name="leftMargin"><number>20</number></property>
-        <property name="topMargin"><number>18</number></property>
-        <property name="rightMargin"><number>20</number></property>
-        <property name="bottomMargin"><number>14</number></property>
-        <property name="spacing"><number>4</number></property>
-
-        <item>
-         <widget class="QLabel" name="labelTransTitle">
-          <property name="text"><string>🕐  Recent transactions</string></property>
-          <property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:15px; font-weight:600; background:transparent; border:none;</string></property>
-         </widget>
-        </item>
-
-        <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeType"><enum>QSizePolicy::Fixed</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>8</height></size></property></spacer></item>
-
-        <item>
-         <widget class="QFrame" name="transDivider1">
-          <property name="frameShape"><enum>QFrame::HLine</enum></property>
-          <property name="styleSheet"><string notr="true">background-color:#2E2E4E; border:none;</string></property>
-          <property name="maximumHeight"><number>1</number></property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="transRow1">
-          <property name="topMargin"><number>8</number></property>
-          <property name="bottomMargin"><number>8</number></property>
-          <item>
-           <layout class="QVBoxLayout" name="transRow1Col">
-            <property name="spacing"><number>1</number></property>
-            <item><widget class="QLabel" name="transName1"><property name="text"><string>Lunch set</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-            <item><widget class="QLabel" name="transDate1"><property name="text"><string>Today, 12:05 PM</string></property><property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; background:transparent; border:none;</string></property></widget></item>
-           </layout>
-          </item>
-          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer></item>
-          <item><widget class="QLabel" name="transAmt1"><property name="text"><string>- Rs. 180</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;</string></property></widget></item>
-         </layout>
-        </item>
-
-        <item>
-         <widget class="QFrame" name="transDivider2">
-          <property name="frameShape"><enum>QFrame::HLine</enum></property>
-          <property name="styleSheet"><string notr="true">background-color:#2E2E4E; border:none;</string></property>
-          <property name="maximumHeight"><number>1</number></property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="transRow2">
-          <property name="topMargin"><number>8</number></property>
-          <property name="bottomMargin"><number>8</number></property>
-          <item>
-           <layout class="QVBoxLayout" name="transRow2Col">
-            <property name="spacing"><number>1</number></property>
-            <item><widget class="QLabel" name="transName2"><property name="text"><string>Tea + snacks</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-            <item><widget class="QLabel" name="transDate2"><property name="text"><string>Today, 10:30 AM</string></property><property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; background:transparent; border:none;</string></property></widget></item>
-           </layout>
-          </item>
-          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer></item>
-          <item><widget class="QLabel" name="transAmt2"><property name="text"><string>- Rs. 65</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;</string></property></widget></item>
-         </layout>
-        </item>
-
-        <item>
-         <widget class="QFrame" name="transDivider3">
-          <property name="frameShape"><enum>QFrame::HLine</enum></property>
-          <property name="styleSheet"><string notr="true">background-color:#2E2E4E; border:none;</string></property>
-          <property name="maximumHeight"><number>1</number></property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="transRow3">
-          <property name="topMargin"><number>8</number></property>
-          <property name="bottomMargin"><number>4</number></property>
-          <item>
-           <layout class="QVBoxLayout" name="transRow3Col">
-            <property name="spacing"><number>1</number></property>
-            <item><widget class="QLabel" name="transName3"><property name="text"><string>Balance top-up</string></property><property name="styleSheet"><string notr="true">color:#E8E8F0; font-size:14px; background:transparent; border:none;</string></property></widget></item>
-            <item><widget class="QLabel" name="transDate3"><property name="text"><string>Jun 12, 4:20 PM</string></property><property name="styleSheet"><string notr="true">color:#6060A0; font-size:11px; background:transparent; border:none;</string></property></widget></item>
-           </layout>
-          </item>
-          <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>20</width><height>20</height></size></property></spacer></item>
-          <item><widget class="QLabel" name="transAmt3"><property name="text"><string>+ Rs. 1,000</string></property><property name="styleSheet"><string notr="true">color:#2ECC71; font-size:14px; font-weight:600; background:transparent; border:none;</string></property></widget></item>
-         </layout>
-        </item>
-
-       </layout>
-      </widget>
-     </item>
-
-    </layout>
-   </item>
-
-   <item>
-    <widget class="QFrame" name="footerBar">
-     <property name="minimumHeight"><number>52</number></property>
-     <property name="styleSheet"><string notr="true">QFrame#footerBar{background-color:#24243A;border-radius:12px;}</string></property>
-     <layout class="QHBoxLayout" name="footerLayout">
-      <property name="leftMargin"><number>20</number></property>
-      <property name="rightMargin"><number>20</number></property>
-      <property name="spacing"><number>10</number></property>
-      <item>
-       <widget class="QLabel" name="labelFooterIcon">
-        <property name="text"><string>📶</string></property>
-        <property name="styleSheet"><string notr="true">font-size:18px; background:transparent; border:none;</string></property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelFooterText">
-        <property name="text"><string>Card ID A1B2C3D4 · Tap your card again anytime to refresh this view</string></property>
-        <property name="styleSheet"><string notr="true">color:#8080A8; font-size:13px; background:transparent; border:none;</string></property>
-       </widget>
-      </item>
-      <item>
-       <spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-
-   <item>
-    <spacer name="bottomSpacer">
-     <property name="orientation"><enum>Qt::Vertical</enum></property>
-     <property name="sizeHint" stdset="0"><size><width>20</width><height>10</height></size></property>
-    </spacer>
-   </item>
-
   </layout>
  </widget>
  <resources/>

@@ -16,7 +16,7 @@ public:
 
     void refreshData();
 
-private slots:
+public slots:
     void onRFIDScanned(const QString &rfidCardId, const QString &mode = "attendance");
 
 private:

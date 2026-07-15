@@ -4,18 +4,22 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QSqlQuery>
+#include <QMessageBox>
+#include <QTableWidgetItem>   // for table items
 
 StudentDashboardPage::StudentDashboardPage(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::StudentDashboardPage)
     , m_db(DatabaseManager::instance())
+    , m_currentBalance(0)
 {
     ui->setupUi(this);
 
+    // Show info view by default (stacked widget index 0)
+    ui->stackedWidget->setCurrentIndex(0);
+
     // Set default avatar initials
     ui->labelAvatar->setText("??");
-
-    // Show waiting state
     ui->labelFooterText->setText("Waiting for card tap...");
 
     // Ensure database is open
@@ -23,6 +27,11 @@ StudentDashboardPage::StudentDashboardPage(QWidget *parent)
         qDebug() << "⚠️ Database not open, reinitializing...";
         m_db->initDatabase();
     }
+
+    // Connect buttons
+    connect(ui->btnBuyFood, &QPushButton::clicked, this, &StudentDashboardPage::onBuyFoodClicked);
+    connect(ui->btnBackToInfo, &QPushButton::clicked, this, &StudentDashboardPage::onBackToInfoClicked);
+    connect(ui->btnPurchase, &QPushButton::clicked, this, &StudentDashboardPage::onPurchaseClicked);
 }
 
 StudentDashboardPage::~StudentDashboardPage()
@@ -30,26 +39,22 @@ StudentDashboardPage::~StudentDashboardPage()
     delete ui;
 }
 
-// Helper function to ensure database is open
+// ----------------------------------------------------------------------
+// Database helper
+// ----------------------------------------------------------------------
 bool StudentDashboardPage::ensureDatabaseOpen()
 {
-    if (!m_db) {
-        qDebug() << "❌ Database manager is null!";
-        return false;
-    }
-
+    if (!m_db) return false;
     if (!m_db->isOpen()) {
-        qDebug() << "⚠️ Database is not open, attempting to reopen...";
         m_db->initDatabase();
-        if (!m_db->isOpen()) {
-            qDebug() << "❌ Failed to reopen database!";
-            return false;
-        }
-        qDebug() << "✅ Database reopened successfully";
+        return m_db->isOpen();
     }
     return true;
 }
 
+// ----------------------------------------------------------------------
+// Public slots / entry points
+// ----------------------------------------------------------------------
 void StudentDashboardPage::refreshData()
 {
     if (!ensureDatabaseOpen()) {
@@ -57,44 +62,30 @@ void StudentDashboardPage::refreshData()
         return;
     }
 
-    // If there's a current student, reload their data
-    // For now, just show waiting state
-    ui->labelAvatar->setText("??");
-    ui->labelStudentName->setText("Tap your RFID card");
-    ui->labelStudentMeta->setText("to view your dashboard");
-    ui->labelCardStatus->setText("⏳ Waiting...");
+    // If we have a student loaded, reload their data; otherwise show waiting state.
+    if (m_currentStudent.id != -1) {
+        updateUI(m_currentStudent);
+    } else {
+        ui->labelAvatar->setText("??");
+        ui->labelStudentName->setText("Tap your RFID card");
+        ui->labelStudentMeta->setText("to view your dashboard");
+        ui->labelCardStatus->setText("⏳ Waiting...");
 
-    ui->sc1Value->setText("—");
-    ui->sc1Sub->setText("");
-    ui->sc2Value->setText("—");
-    ui->sc2Sub->setText("");
-    ui->sc3Value->setText("—");
-    ui->sc3Sub->setText("");
+        ui->sc1Value->setText("—");
+        ui->sc1Sub->setText("");
+        ui->sc2Value->setText("—");
+        ui->sc2Sub->setText("");
+        ui->sc3Value->setText("—");
+        ui->sc3Sub->setText("");
 
-    ui->mealItem1->setText("—");
-    ui->mealTime1->setText("");
-    ui->mealItem2->setText("—");
-    ui->mealTime2->setText("");
-    ui->labelMealFooter->setText("No purchases today");
-
-    ui->transName1->setText("—");
-    ui->transDate1->setText("");
-    ui->transAmt1->setText("");
-    ui->transName2->setText("—");
-    ui->transDate2->setText("");
-    ui->transAmt2->setText("");
-    ui->transName3->setText("—");
-    ui->transDate3->setText("");
-    ui->transAmt3->setText("");
-
-    ui->labelFooterText->setText("Tap your RFID card to view your dashboard");
+        ui->labelFooterText->setText("Tap your RFID card to view your dashboard");
+    }
 }
 
 void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
 {
     qDebug() << "📱 Loading student dashboard for RFID:" << cardId;
 
-    // Ensure database is open
     if (!ensureDatabaseOpen()) {
         ui->labelAvatar->setText("❌");
         ui->labelStudentName->setText("Database error");
@@ -104,9 +95,7 @@ void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
         return;
     }
 
-    // Get student by RFID
     Student student = m_db->getStudentByRFID(cardId);
-
     if (student.id == -1) {
         qDebug() << "❌ Student not found for RFID:" << cardId;
         ui->labelAvatar->setText("❌");
@@ -118,26 +107,27 @@ void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
     }
 
     qDebug() << "✅ Student found:" << student.name << "(ID:" << student.id << ")";
-
-    // Update UI with student data
+    m_currentStudent = student;
+    m_currentBalance = m_db->getStudentBalance(student.id);
     updateUI(student);
 }
 
+// ----------------------------------------------------------------------
+// UI updates
+// ----------------------------------------------------------------------
 void StudentDashboardPage::updateUI(const Student &student)
 {
-    // 1. Set avatar initials
+    // Avatar initials
     QStringList nameParts = student.name.split(" ");
     QString initials;
-    if (nameParts.size() >= 2) {
+    if (nameParts.size() >= 2)
         initials = nameParts[0].left(1).toUpper() + nameParts[nameParts.size()-1].left(1).toUpper();
-    } else if (nameParts.size() == 1) {
+    else if (nameParts.size() == 1)
         initials = nameParts[0].left(2).toUpper();
-    } else {
+    else
         initials = "??";
-    }
     ui->labelAvatar->setText(initials);
 
-    // 2. Student info
     ui->labelStudentName->setText(student.name);
     ui->labelStudentMeta->setText(QString("Roll No. %1  ·  %2  ·  Kathmandu University")
                                       .arg(student.rollNo)
@@ -145,49 +135,38 @@ void StudentDashboardPage::updateUI(const Student &student)
     ui->labelCardStatus->setText("✓  Card active");
     ui->labelCardStatus->setStyleSheet("background-color:#1E3D2B; color:#2ECC71; border-radius:15px; padding:0 16px; font-size:13px; font-weight:600;");
 
-    // 3. Update attendance stats
+    // Update the three stat cards
     updateAttendanceStats(student.id);
-
-    // 4. Update balance
     updateBalance(student.id);
 
-    // 5. Update recent transactions
-    updateRecentTransactions(student.id);
-
-    // 6. Update today's meals
-    updateTodayMeals(student.id);
-
-    // 7. Footer
+    // Footer
     ui->labelFooterText->setText(QString("Card ID %1 · Tap your card again anytime to refresh this view")
                                      .arg(student.rfidCardId));
+
+    // Ensure we are on the info view
+    ui->stackedWidget->setCurrentIndex(0);
 }
 
+// ----------------------------------------------------------------------
+// Stats update functions
+// ----------------------------------------------------------------------
 void StudentDashboardPage::updateAttendanceStats(int studentId)
 {
     if (!ensureDatabaseOpen()) return;
 
-    // Get total classes (distinct dates)
     int totalClasses = 0;
     QSqlQuery totalQuery(m_db->getDatabase());
     totalQuery.prepare("SELECT COUNT(DISTINCT date) FROM attendance");
-    if (totalQuery.exec() && totalQuery.next()) {
+    if (totalQuery.exec() && totalQuery.next())
         totalClasses = totalQuery.value(0).toInt();
-    } else {
-        qDebug() << "❌ Failed to get total classes:" << totalQuery.lastError().text();
-    }
 
-    // Get attended classes for this student
     int attended = 0;
     QSqlQuery attQuery(m_db->getDatabase());
     attQuery.prepare("SELECT COUNT(*) FROM attendance WHERE student_id = ?");
     attQuery.addBindValue(studentId);
-    if (attQuery.exec() && attQuery.next()) {
+    if (attQuery.exec() && attQuery.next())
         attended = attQuery.value(0).toInt();
-    } else {
-        qDebug() << "❌ Failed to get attendance for student:" << attQuery.lastError().text();
-    }
 
-    // Get today's attendance status
     QString todayStatus = "Not marked";
     QString todayTime = "";
     QSqlQuery todayQuery(m_db->getDatabase());
@@ -199,10 +178,8 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
         todayTime = todayQuery.value(0).toString();
     }
 
-    // Calculate percentage
     int percentage = (totalClasses > 0) ? (attended * 100 / totalClasses) : 0;
 
-    // Update UI
     if (todayStatus == "Marked") {
         ui->sc1Value->setText("✅ Marked");
         ui->sc1Value->setStyleSheet("color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;");
@@ -216,14 +193,12 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
     ui->sc2Value->setText(QString("%1%").arg(percentage));
     ui->sc2Sub->setText(QString("%1 of %2 classes").arg(attended).arg(totalClasses));
 
-    // Color based on percentage
-    if (percentage >= 75) {
+    if (percentage >= 75)
         ui->sc2Value->setStyleSheet("color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;");
-    } else if (percentage >= 50) {
+    else if (percentage >= 50)
         ui->sc2Value->setStyleSheet("color:#F39C12; font-size:24px; font-weight:700; background:transparent; border:none;");
-    } else {
+    else
         ui->sc2Value->setStyleSheet("color:#E74C3C; font-size:24px; font-weight:700; background:transparent; border:none;");
-    }
 }
 
 void StudentDashboardPage::updateBalance(int studentId)
@@ -231,77 +206,52 @@ void StudentDashboardPage::updateBalance(int studentId)
     if (!ensureDatabaseOpen()) return;
 
     int balance = m_db->getStudentBalance(studentId);
+    m_currentBalance = balance;
     ui->sc3Value->setText(QString("Rs. %1").arg(balance));
     ui->sc3Sub->setText(QString("Balance updated %1").arg(QDate::currentDate().toString("MMM dd")));
 
-    // Color based on balance
-    if (balance > 500) {
+    if (balance > 500)
         ui->sc3Value->setStyleSheet("color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;");
-    } else if (balance > 100) {
+    else if (balance > 100)
         ui->sc3Value->setStyleSheet("color:#F39C12; font-size:24px; font-weight:700; background:transparent; border:none;");
-    } else {
+    else
         ui->sc3Value->setStyleSheet("color:#E74C3C; font-size:24px; font-weight:700; background:transparent; border:none;");
-    }
 }
 
+// Keep these two functions (they are not called in updateUI anymore)
+// but they might be reused later.
 void StudentDashboardPage::updateRecentTransactions(int studentId)
 {
-    if (!ensureDatabaseOpen()) return;
-
-    QList<CafeteriaTransaction> transactions = m_db->getTransactionsByStudent(studentId);
-
-    // Clear existing transaction rows
-    ui->transName1->setText("—");
-    ui->transDate1->setText("");
-    ui->transAmt1->setText("");
-    ui->transName2->setText("—");
-    ui->transDate2->setText("");
-    ui->transAmt2->setText("");
-    ui->transName3->setText("—");
-    ui->transDate3->setText("");
-    ui->transAmt3->setText("");
-
-    // Show up to 3 most recent transactions
-    int count = qMin(3, transactions.size());
-
-    if (count > 0) {
-        ui->transName1->setText(transactions[0].item);
-        ui->transDate1->setText(transactions[0].date + ", " + transactions[0].time);
-        ui->transAmt1->setText("- Rs. " + QString::number(transactions[0].amount));
-        ui->transAmt1->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
-    }
-
-    if (count > 1) {
-        ui->transName2->setText(transactions[1].item);
-        ui->transDate2->setText(transactions[1].date + ", " + transactions[1].time);
-        ui->transAmt2->setText("- Rs. " + QString::number(transactions[1].amount));
-        ui->transAmt2->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
-    }
-
-    if (count > 2) {
-        ui->transName3->setText(transactions[2].item);
-        ui->transDate3->setText(transactions[2].date + ", " + transactions[2].time);
-        ui->transAmt3->setText("- Rs. " + QString::number(transactions[2].amount));
-        ui->transAmt3->setStyleSheet("color:#E8E8F0; font-size:14px; font-weight:600; background:transparent; border:none;");
-    }
+    // Not used in current UI, but kept for potential later use.
+    Q_UNUSED(studentId);
 }
 
 void StudentDashboardPage::updateTodayMeals(int studentId)
 {
-    if (!ensureDatabaseOpen()) return;
+    // Not used in current UI, but kept for potential later use.
+    Q_UNUSED(studentId);
+}
+
+// ----------------------------------------------------------------------
+// Food page table population
+// ----------------------------------------------------------------------
+void StudentDashboardPage::updateFoodPage()
+{
+    if (!ensureDatabaseOpen() || m_currentStudent.id == -1) {
+        ui->tableTodayMeals->setRowCount(0);
+        ui->labelFoodMessage->setText("No student loaded");
+        return;
+    }
 
     QDate today = QDate::currentDate();
     QString todayStr = today.toString("yyyy-MM-dd");
 
-    // Get today's transactions
     QList<CafeteriaTransaction> todayTransactions;
     QSqlQuery query(m_db->getDatabase());
     query.prepare("SELECT item, amount, time FROM cafeteria_transactions "
-                  "WHERE student_id = ? AND date = ? "
-                  "ORDER BY time DESC");
-    query.addBindValue(studentId);
+                  "WHERE student_id = ? AND date = ? ORDER BY time DESC");
+    query.addBindValue(m_currentStudent.id);
     query.addBindValue(todayStr);
-
     if (query.exec()) {
         while (query.next()) {
             CafeteriaTransaction trans;
@@ -310,36 +260,84 @@ void StudentDashboardPage::updateTodayMeals(int studentId)
             trans.time = query.value("time").toString();
             todayTransactions.append(trans);
         }
-    } else {
-        qDebug() << "❌ Failed to get today's meals:" << query.lastError().text();
     }
 
-    // Update meal items
-    int totalSpent = 0;
+    int rowCount = todayTransactions.size();
+    ui->tableTodayMeals->setRowCount(rowCount);
 
-    if (todayTransactions.size() > 0) {
-        ui->mealItem1->setText(todayTransactions[0].item);
-        ui->mealTime1->setText(todayTransactions[0].time);
-        totalSpent += todayTransactions[0].amount;
+    if (rowCount == 0) {
+        ui->labelFoodMessage->setText("No purchases today");
     } else {
-        ui->mealItem1->setText("—");
-        ui->mealTime1->setText("");
+        ui->labelFoodMessage->setText(QString("%1 purchase(s) today").arg(rowCount));
+        for (int i = 0; i < rowCount; ++i) {
+            ui->tableTodayMeals->setItem(i, 0, new QTableWidgetItem(todayTransactions[i].item));
+            ui->tableTodayMeals->setItem(i, 1, new QTableWidgetItem(todayTransactions[i].time));
+            ui->tableTodayMeals->setItem(i, 2, new QTableWidgetItem("Rs. " + QString::number(todayTransactions[i].amount)));
+        }
     }
 
-    if (todayTransactions.size() > 1) {
-        ui->mealItem2->setText(todayTransactions[1].item);
-        ui->mealTime2->setText(todayTransactions[1].time);
-        totalSpent += todayTransactions[1].amount;
-    } else {
-        ui->mealItem2->setText("—");
-        ui->mealTime2->setText("");
+    // Make columns stretch to fill the table width
+    ui->tableTodayMeals->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+}
+
+// ----------------------------------------------------------------------
+// Slot implementations
+// ----------------------------------------------------------------------
+void StudentDashboardPage::onBuyFoodClicked()
+{
+    // Switch to food purchase page
+    ui->stackedWidget->setCurrentIndex(1);
+    // Populate the table with today's meals
+    updateFoodPage();
+    // Refresh balance (just in case)
+    if (m_currentStudent.id != -1)
+        updateBalance(m_currentStudent.id);
+}
+
+void StudentDashboardPage::onBackToInfoClicked()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+}
+
+void StudentDashboardPage::onPurchaseClicked()
+{
+    if (m_currentStudent.id == -1) {
+        QMessageBox::warning(this, "Error", "No student loaded");
+        return;
     }
 
-    if (todayTransactions.size() == 0) {
-        ui->labelMealFooter->setText("No purchases today");
-    } else {
-        ui->labelMealFooter->setText(QString("%1 purchases · Rs. %2 spent today")
-                                         .arg(todayTransactions.size())
-                                         .arg(totalSpent));
+    int price = 100; // fixed price for demo
+
+    if (m_currentBalance < price) {
+        QMessageBox::warning(this, "Insufficient Balance",
+                             QString("You need Rs. %1 more to buy this item.")
+                                 .arg(price - m_currentBalance));
+        return;
     }
+
+    // ----- MOCK PURCHASE (no database write yet) -----
+    // In a real app you would call:
+    //   m_db->deductBalance(m_currentStudent.id, price);
+    //   m_db->recordCafeteriaTransaction(m_currentStudent.id, "Meal", price, "Purchase");
+    // For now, we just update the local balance and the table.
+
+    m_currentBalance -= price;
+    // Update the balance label manually
+    ui->sc3Value->setText(QString("Rs. %1").arg(m_currentBalance));
+
+    // Add a mock row to the table (for demonstration)
+    int row = ui->tableTodayMeals->rowCount();
+    ui->tableTodayMeals->insertRow(row);
+    ui->tableTodayMeals->setItem(row, 0, new QTableWidgetItem("Meal (mock)"));
+    ui->tableTodayMeals->setItem(row, 1, new QTableWidgetItem(QTime::currentTime().toString("hh:mm AP")));
+    ui->tableTodayMeals->setItem(row, 2, new QTableWidgetItem("Rs. " + QString::number(price)));
+    ui->labelFoodMessage->setText(QString("%1 purchase(s) today").arg(row+1));
+
+    QMessageBox::information(this, "Purchase Successful",
+                             QString("You bought a meal for Rs. %1.\nRemaining balance: Rs. %2")
+                                 .arg(price)
+                                 .arg(m_currentBalance));
+
+    // Go back to info view
+    ui->stackedWidget->setCurrentIndex(0);
 }

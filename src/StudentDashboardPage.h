@@ -5,7 +5,7 @@
 #include "database.h"
 
 namespace Ui { class StudentDashboardPage; }
-//0
+
 class StudentDashboardPage : public QWidget
 {
     Q_OBJECT
@@ -17,16 +17,24 @@ public:
     void loadStudentByCardId(const QString &cardId);
     void refreshData();
 
+private slots:
+    void onBuyFoodClicked();
+    void onBackToInfoClicked();
+    void onPurchaseClicked();
+
 private:
-    bool ensureDatabaseOpen();  // ADD THIS
+    bool ensureDatabaseOpen();
     void updateUI(const Student &student);
     void updateAttendanceStats(int studentId);
     void updateBalance(int studentId);
     void updateRecentTransactions(int studentId);
     void updateTodayMeals(int studentId);
+    void updateFoodPage();            // new
 
     Ui::StudentDashboardPage *ui;
     DatabaseManager *m_db;
+    Student m_currentStudent;
+    int m_currentBalance;
 };
 
-#endif
+#endif // STUDENTDASHBOARDPAGE_H
