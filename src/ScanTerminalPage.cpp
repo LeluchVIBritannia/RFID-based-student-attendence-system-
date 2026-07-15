@@ -1,6 +1,6 @@
 #include "ScanTerminalPage.h"
 #include "ui_ScanTerminalPage.h"
-#include "MainWindow.h"  // ADD THIS
+#include "MainWindow.h"
 
 #include <QLabel>
 #include <QDateTime>
