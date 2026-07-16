@@ -13,7 +13,5 @@ int main(int argc, char *argv[])
     w.show();
 
     qDebug() << "Window should be visible now!";
-
-    SerialManager manager;
     return app.exec();
 }

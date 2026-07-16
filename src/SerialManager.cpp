@@ -10,6 +10,9 @@ SerialManager::SerialManager(QObject *parent) : QObject(parent)
         qDebug() << "Serial Conected";
     else
         qDebug() << "Failed to open port";
+        qDebug() << serial.errorString();
+        qDebug() << serial.error();
+
 
     connect(&serial , & QSerialPort::readyRead , this , &SerialManager::onDataRecived);
 }

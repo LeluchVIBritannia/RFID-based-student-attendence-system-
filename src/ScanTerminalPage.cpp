@@ -69,7 +69,7 @@ void ScanTerminalPage::onRFIDScanned(const QString &rfidCardId, const QString &m
     }
 }
 
-// ADD THIS NEW FUNCTION
+
 void ScanTerminalPage::navigateToStudentDashboard(const QString &rfidCardId)
 {
     // Find the MainWindow instance
