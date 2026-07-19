@@ -96,7 +96,7 @@ void MainWindow::showStudentDashboard(const QString &rfidCardId)
 void MainWindow::handleIdleTimeout()
 {
     if (m_stack->currentIndex() == STUDENT_DASHBOARD) {
-        qDebug() << "⏰ Kiosk timeout reached. Returning to Login page.";
+        qDebug() << "Timeout reached. Returning to Login page.";
         m_stack->setCurrentIndex(LOGIN);
     }
 }

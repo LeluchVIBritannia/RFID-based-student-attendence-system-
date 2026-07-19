@@ -50,25 +50,19 @@ void CafeteriaPage::updateStatistics()
              << "Revenue:" << stats.revenue
              << "Unique:" << stats.uniqueStudents;
 
-    // Update TODAY'S TRANSACTIONS - cafVal1
     QLabel *lblTransactions = findChild<QLabel*>("cafVal1");
     if (lblTransactions) {
         lblTransactions->setText(QString::number(stats.transactions));
-        qDebug() << "Updated TRANSACTIONS to:" << stats.transactions;
     }
 
-    // Update REVENUE TODAY - cafVal2
     QLabel *lblRevenue = findChild<QLabel*>("cafVal2");
     if (lblRevenue) {
         lblRevenue->setText(QString::number(stats.revenue));
-        qDebug() << "Updated REVENUE to:" << stats.revenue;
     }
 
-    // Update UNIQUE STUDENTS - cafVal3
     QLabel *lblUniqueStudents = findChild<QLabel*>("cafVal3");
     if (lblUniqueStudents) {
         lblUniqueStudents->setText(QString::number(stats.uniqueStudents));
-        qDebug() << "Updated UNIQUE STUDENTS to:" << stats.uniqueStudents;
     }
 }
 
@@ -82,16 +76,13 @@ void CafeteriaPage::updateTransactionLog()
         return;
     }
 
-    // Set column headers
     t->setColumnCount(5);
     t->setHorizontalHeaderLabels({"Student", "Roll No.", "Item", "Amount (NPR)", "Time"});
     t->horizontalHeader()->setStretchLastSection(true);
 
-    // Get today's transactions
     QList<CafeteriaTransaction> transactions = m_db->getTodaysTransactions();
     qDebug() << "Today's transactions has" << transactions.size() << "entries";
 
-    // Clear existing rows
     t->setRowCount(0);
 
     if (transactions.isEmpty()) {
@@ -133,9 +124,18 @@ void CafeteriaPage::onRFIDScanned(const QString &rfidCardId)
 
     int balance = m_db->getStudentBalance(student.id);
 
-    // Show student info and ask for purchase
-    QStringList items = {"Lunch Set (Rs. 180)", "Tea + Snack (Rs. 65)", "Coffee (Rs. 80)",
-                         "Pasta (Rs. 120)", "Pizza (Rs. 150)", "Sandwich (Rs. 100)", "Juice (Rs. 50)"};
+    // Menu items now come from the database (menu_items table) instead of
+    // being hardcoded here — same source StudentDashboardPage uses.
+    QList<MenuItem> menuItems = m_db->getAllMenuItems();
+    if (menuItems.isEmpty()) {
+        QMessageBox::warning(this, "No Items", "No menu items configured in the database.");
+        return;
+    }
+
+    QStringList items;
+    for (const MenuItem &mi : menuItems) {
+        items << QString("%1 (Rs. %2)").arg(mi.name).arg(mi.price);
+    }
 
     bool ok;
     QString selected = QInputDialog::getItem(this, "Select Item",
@@ -146,26 +146,27 @@ void CafeteriaPage::onRFIDScanned(const QString &rfidCardId)
                                              items, 0, false, &ok);
 
     if (ok && !selected.isEmpty()) {
-        // Extract item name and amount
-        QStringList parts = selected.split(" (Rs. ");
-        QString itemName = parts[0];
-        int amount = parts[1].replace(")", "").toInt();
+        int idx = items.indexOf(selected);
+        if (idx < 0 || idx >= menuItems.size()) {
+            return; // shouldn't happen, but guard anyway
+        }
+        const MenuItem &chosen = menuItems[idx];
 
-        if (balance < amount) {
+        if (balance < chosen.price) {
             QMessageBox::warning(this, "Insufficient Balance",
                                  QString("Insufficient balance!\n\n"
                                          "Item: %1\nAmount: Rs. %2\nYour Balance: Rs. %3")
-                                     .arg(itemName).arg(amount).arg(balance));
+                                     .arg(chosen.name).arg(chosen.price).arg(balance));
             return;
         }
 
-        bool success = m_db->recordCafeteriaTransaction(student.id, itemName, amount);
+        bool success = m_db->recordCafeteriaTransaction(student.id, chosen.name, chosen.price);
 
         if (success) {
             QMessageBox::information(this, "Success",
                                      QString("Purchase successful!\n\n"
                                              "Item: %1\nAmount: Rs. %2\nRemaining Balance: Rs. %3")
-                                         .arg(itemName).arg(amount).arg(balance - amount));
+                                         .arg(chosen.name).arg(chosen.price).arg(balance - chosen.price));
             refreshData();
         } else {
             QMessageBox::critical(this, "Error", "Transaction failed. Please try again.");

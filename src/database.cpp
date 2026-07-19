@@ -215,10 +215,91 @@ bool DatabaseManager::createTables()
         return false;
     }
 
+    // NEW: menu_items table — single source of truth for purchasable items,
+    // used by both CafeteriaPage (admin) and StudentDashboardPage (kiosk).
+    success = query.exec(
+        "CREATE TABLE IF NOT EXISTS menu_items ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "name TEXT UNIQUE NOT NULL, "
+        "price INTEGER NOT NULL, "
+        "category TEXT DEFAULT 'food'"
+        ")"
+        );
+
+    if (!success) {
+        qDebug() << "Error creating menu_items table:" << query.lastError().text();
+        return false;
+    }
+
     qDebug() << "Tables created successfully";
+
+    // Seed default menu items if the table is empty (safe to call every startup)
+    insertDefaultMenuItems();
+
     return true;
 }
 
+// NEW
+bool DatabaseManager::insertDefaultMenuItems()
+{
+    QSqlQuery countQuery("SELECT COUNT(*) FROM menu_items", m_db);
+    if (countQuery.exec() && countQuery.next() && countQuery.value(0).toInt() > 0) {
+        return true; // already seeded, don't duplicate
+    }
+
+    struct DefaultItem { const char *name; int price; const char *category; };
+    static const DefaultItem defaults[] = {
+                                           {"Lunch Set",     180, "food"},
+                                           {"Tea + Snack",    65, "drink"},
+                                           {"Coffee",         80, "drink"},
+                                           {"Pasta",         120, "food"},
+                                           {"Pizza",         150, "food"},
+                                           {"Sandwich",      100, "food"},
+                                           {"Juice",          50, "drink"},
+                                           };
+
+    bool allOk = true;
+    for (const auto &item : defaults) {
+        if (!addMenuItem(item.name, item.price, item.category)) {
+            allOk = false;
+        }
+    }
+    return allOk;
+}
+
+// NEW
+bool DatabaseManager::addMenuItem(const QString &name, int price, const QString &category)
+{
+    QSqlQuery query(m_db);
+    query.prepare("INSERT OR IGNORE INTO menu_items (name, price, category) VALUES (?, ?, ?)");
+    query.addBindValue(name);
+    query.addBindValue(price);
+    query.addBindValue(category);
+
+    if (!query.exec()) {
+        qDebug() << "Error adding menu item:" << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
+// NEW
+QList<MenuItem> DatabaseManager::getAllMenuItems()
+{
+    QList<MenuItem> items;
+    QSqlQuery query("SELECT id, name, price, category FROM menu_items ORDER BY category, name", m_db);
+
+    while (query.next()) {
+        MenuItem item;
+        item.id = query.value("id").toInt();
+        item.name = query.value("name").toString();
+        item.price = query.value("price").toInt();
+        item.category = query.value("category").toString();
+        items.append(item);
+    }
+
+    return items;
+}
 
 bool DatabaseManager::addStudent(const QString &name, const QString &rollNo,
                                  const QString &rfidCardId, int balance,

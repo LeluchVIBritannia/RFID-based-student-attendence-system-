@@ -5,7 +5,8 @@
 #include <QDateTime>
 #include <QSqlQuery>
 #include <QMessageBox>
-#include <QTableWidgetItem>   // for table items
+#include <QInputDialog>
+#include <QTableWidgetItem>
 
 StudentDashboardPage::StudentDashboardPage(QWidget *parent)
     : QWidget(parent)
@@ -42,6 +43,7 @@ StudentDashboardPage::~StudentDashboardPage()
 // ----------------------------------------------------------------------
 // Database helper
 // ----------------------------------------------------------------------
+
 bool StudentDashboardPage::ensureDatabaseOpen()
 {
     if (!m_db) return false;
@@ -52,24 +54,20 @@ bool StudentDashboardPage::ensureDatabaseOpen()
     return true;
 }
 
-// ----------------------------------------------------------------------
-// Public slots / entry points
-// ----------------------------------------------------------------------
 void StudentDashboardPage::refreshData()
 {
     if (!ensureDatabaseOpen()) {
-        ui->labelFooterText->setText("❌ Database connection failed");
+        ui->labelFooterText->setText("Database connection failed");
         return;
     }
 
-    // If we have a student loaded, reload their data; otherwise show waiting state.
     if (m_currentStudent.id != -1) {
         updateUI(m_currentStudent);
     } else {
         ui->labelAvatar->setText("??");
         ui->labelStudentName->setText("Tap your RFID card");
         ui->labelStudentMeta->setText("to view your dashboard");
-        ui->labelCardStatus->setText("⏳ Waiting...");
+        ui->labelCardStatus->setText("Waiting...");
 
         ui->sc1Value->setText("—");
         ui->sc1Sub->setText("");
@@ -84,40 +82,37 @@ void StudentDashboardPage::refreshData()
 
 void StudentDashboardPage::loadStudentByCardId(const QString &cardId)
 {
-    qDebug() << "📱 Loading student dashboard for RFID:" << cardId;
+    qDebug() << "Loading student dashboard for RFID:" << cardId;
 
     if (!ensureDatabaseOpen()) {
-        ui->labelAvatar->setText("❌");
+        ui->labelAvatar->setText("XXX");
         ui->labelStudentName->setText("Database error");
         ui->labelStudentMeta->setText("Please contact administrator");
-        ui->labelCardStatus->setText("❌ DB Error");
-        ui->labelFooterText->setText("❌ Database connection failed");
+        ui->labelCardStatus->setText("DB Error");
+        ui->labelFooterText->setText("Database connection failed");
         return;
     }
 
     Student student = m_db->getStudentByRFID(cardId);
     if (student.id == -1) {
-        qDebug() << "❌ Student not found for RFID:" << cardId;
-        ui->labelAvatar->setText("❌");
+        qDebug() << "Student not found for RFID:" << cardId;
+        ui->labelAvatar->setText("XXX");
         ui->labelStudentName->setText("Card not recognized");
         ui->labelStudentMeta->setText("Please contact the administrator");
-        ui->labelCardStatus->setText("❌ Invalid card");
-        ui->labelFooterText->setText("❌ Card ID " + cardId + " not recognized");
+        ui->labelCardStatus->setText("Invalid card");
+        ui->labelFooterText->setText("Card ID " + cardId + " not recognized");
         return;
     }
 
-    qDebug() << "✅ Student found:" << student.name << "(ID:" << student.id << ")";
+    qDebug() << "Student found:" << student.name << "(ID:" << student.id << ")";
     m_currentStudent = student;
     m_currentBalance = m_db->getStudentBalance(student.id);
     updateUI(student);
 }
 
-// ----------------------------------------------------------------------
-// UI updates
-// ----------------------------------------------------------------------
+
 void StudentDashboardPage::updateUI(const Student &student)
 {
-    // Avatar initials
     QStringList nameParts = student.name.split(" ");
     QString initials;
     if (nameParts.size() >= 2)
@@ -135,21 +130,19 @@ void StudentDashboardPage::updateUI(const Student &student)
     ui->labelCardStatus->setText("✓  Card active");
     ui->labelCardStatus->setStyleSheet("background-color:#1E3D2B; color:#2ECC71; border-radius:15px; padding:0 16px; font-size:13px; font-weight:600;");
 
-    // Update the three stat cards
     updateAttendanceStats(student.id);
     updateBalance(student.id);
 
-    // Footer
     ui->labelFooterText->setText(QString("Card ID %1 · Tap your card again anytime to refresh this view")
                                      .arg(student.rfidCardId));
 
-    // Ensure we are on the info view
     ui->stackedWidget->setCurrentIndex(0);
 }
 
 // ----------------------------------------------------------------------
 // Stats update functions
 // ----------------------------------------------------------------------
+
 void StudentDashboardPage::updateAttendanceStats(int studentId)
 {
     if (!ensureDatabaseOpen()) return;
@@ -181,11 +174,11 @@ void StudentDashboardPage::updateAttendanceStats(int studentId)
     int percentage = (totalClasses > 0) ? (attended * 100 / totalClasses) : 0;
 
     if (todayStatus == "Marked") {
-        ui->sc1Value->setText("✅ Marked");
+        ui->sc1Value->setText("Marked");
         ui->sc1Value->setStyleSheet("color:#2ECC71; font-size:24px; font-weight:700; background:transparent; border:none;");
         ui->sc1Sub->setText(todayTime);
     } else {
-        ui->sc1Value->setText("❌ Not marked");
+        ui->sc1Value->setText("Not marked");
         ui->sc1Value->setStyleSheet("color:#E74C3C; font-size:24px; font-weight:700; background:transparent; border:none;");
         ui->sc1Sub->setText("Please mark attendance");
     }
@@ -218,23 +211,20 @@ void StudentDashboardPage::updateBalance(int studentId)
         ui->sc3Value->setStyleSheet("color:#E74C3C; font-size:24px; font-weight:700; background:transparent; border:none;");
 }
 
-// Keep these two functions (they are not called in updateUI anymore)
-// but they might be reused later.
 void StudentDashboardPage::updateRecentTransactions(int studentId)
 {
-    // Not used in current UI, but kept for potential later use.
     Q_UNUSED(studentId);
 }
 
 void StudentDashboardPage::updateTodayMeals(int studentId)
 {
-    // Not used in current UI, but kept for potential later use.
     Q_UNUSED(studentId);
 }
 
 // ----------------------------------------------------------------------
-// Food page table population
+// Food page table population (purchase HISTORY, not the menu)
 // ----------------------------------------------------------------------
+
 void StudentDashboardPage::updateFoodPage()
 {
     if (!ensureDatabaseOpen() || m_currentStudent.id == -1) {
@@ -276,20 +266,17 @@ void StudentDashboardPage::updateFoodPage()
         }
     }
 
-    // Make columns stretch to fill the table width
     ui->tableTodayMeals->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 // ----------------------------------------------------------------------
 // Slot implementations
 // ----------------------------------------------------------------------
+
 void StudentDashboardPage::onBuyFoodClicked()
 {
-    // Switch to food purchase page
     ui->stackedWidget->setCurrentIndex(1);
-    // Populate the table with today's meals
     updateFoodPage();
-    // Refresh balance (just in case)
     if (m_currentStudent.id != -1)
         updateBalance(m_currentStudent.id);
 }
@@ -306,38 +293,63 @@ void StudentDashboardPage::onPurchaseClicked()
         return;
     }
 
-    int price = 100; // fixed price for demo
-
-    if (m_currentBalance < price) {
-        QMessageBox::warning(this, "Insufficient Balance",
-                             QString("You need Rs. %1 more to buy this item.")
-                                 .arg(price - m_currentBalance));
+    if (!ensureDatabaseOpen()) {
+        QMessageBox::critical(this, "Error", "Database not available");
         return;
     }
 
-    // ----- MOCK PURCHASE (no database write yet) -----
-    // In a real app you would call:
-    //   m_db->deductBalance(m_currentStudent.id, price);
-    //   m_db->recordCafeteriaTransaction(m_currentStudent.id, "Meal", price, "Purchase");
-    // For now, we just update the local balance and the table.
+    // Pull the live menu from the database (same table CafeteriaPage reads from)
+    QList<MenuItem> menuItems = m_db->getAllMenuItems();
+    if (menuItems.isEmpty()) {
+        QMessageBox::warning(this, "No Items", "No menu items configured in the database.");
+        return;
+    }
 
-    m_currentBalance -= price;
-    // Update the balance label manually
-    ui->sc3Value->setText(QString("Rs. %1").arg(m_currentBalance));
+    QStringList itemLabels;
+    for (const MenuItem &mi : menuItems) {
+        itemLabels << QString("%1 (Rs. %2)").arg(mi.name).arg(mi.price);
+    }
 
-    // Add a mock row to the table (for demonstration)
-    int row = ui->tableTodayMeals->rowCount();
-    ui->tableTodayMeals->insertRow(row);
-    ui->tableTodayMeals->setItem(row, 0, new QTableWidgetItem("Meal (mock)"));
-    ui->tableTodayMeals->setItem(row, 1, new QTableWidgetItem(QTime::currentTime().toString("hh:mm AP")));
-    ui->tableTodayMeals->setItem(row, 2, new QTableWidgetItem("Rs. " + QString::number(price)));
-    ui->labelFoodMessage->setText(QString("%1 purchase(s) today").arg(row+1));
+    bool ok;
+    QString selected = QInputDialog::getItem(this, "Buy Food & Drinks",
+                                             QString("Balance: Rs. %1\n\nSelect an item to purchase:")
+                                                 .arg(m_currentBalance),
+                                             itemLabels, 0, false, &ok);
+
+    if (!ok || selected.isEmpty()) {
+        return; // user cancelled
+    }
+
+    int idx = itemLabels.indexOf(selected);
+    if (idx < 0 || idx >= menuItems.size()) {
+        return; // shouldn't happen, but guard anyway
+    }
+    const MenuItem &chosen = menuItems[idx];
+
+    if (m_currentBalance < chosen.price) {
+        QMessageBox::warning(this, "Insufficient Balance",
+                             QString("You need Rs. %1 more to buy %2.")
+                                 .arg(chosen.price - m_currentBalance)
+                                 .arg(chosen.name));
+        return;
+    }
+
+    bool success = m_db->recordCafeteriaTransaction(m_currentStudent.id, chosen.name, chosen.price);
+
+    if (!success) {
+        QMessageBox::critical(this, "Error", "Purchase failed. Please try again.");
+        return;
+    }
+
+    // Re-read from the database rather than mutating local state by hand
+    updateBalance(m_currentStudent.id);
+    updateFoodPage();
 
     QMessageBox::information(this, "Purchase Successful",
-                             QString("You bought a meal for Rs. %1.\nRemaining balance: Rs. %2")
-                                 .arg(price)
+                             QString("You bought %1 for Rs. %2.\nRemaining balance: Rs. %3")
+                                 .arg(chosen.name)
+                                 .arg(chosen.price)
                                  .arg(m_currentBalance));
 
-    // Go back to info view
     ui->stackedWidget->setCurrentIndex(0);
 }

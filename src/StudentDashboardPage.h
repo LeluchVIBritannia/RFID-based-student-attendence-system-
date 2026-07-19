@@ -1,15 +1,12 @@
 #ifndef STUDENTDASHBOARDPAGE_H
 #define STUDENTDASHBOARDPAGE_H
-
 #include <QWidget>
 #include "database.h"
-
 namespace Ui { class StudentDashboardPage; }
 
 class StudentDashboardPage : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit StudentDashboardPage(QWidget *parent = nullptr);
     ~StudentDashboardPage();
@@ -29,12 +26,12 @@ private:
     void updateBalance(int studentId);
     void updateRecentTransactions(int studentId);
     void updateTodayMeals(int studentId);
-    void updateFoodPage();            // new
+    void updateFoodPage();
 
     Ui::StudentDashboardPage *ui;
     DatabaseManager *m_db;
-    Student m_currentStudent;
-    int m_currentBalance;
-};
 
-#endif // STUDENTDASHBOARDPAGE_H
+    Student m_currentStudent;
+    int     m_currentBalance;
+};
+#endif

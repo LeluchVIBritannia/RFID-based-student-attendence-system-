@@ -1,6 +1,5 @@
 #ifndef DATABASE_H
 #define DATABASE_H
-
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -12,7 +11,6 @@
 #include <QList>
 #include <QMap>
 #include <QRandomGenerator>
-
 struct Student {
     int id;
     QString name;
@@ -21,10 +19,8 @@ struct Student {
     int balance;
     QString classSection;
     QString registrationDate;
-
     Student() : id(-1), balance(0) {}
 };
-
 struct AttendanceRecord {
     int id;
     int studentId;
@@ -34,10 +30,8 @@ struct AttendanceRecord {
     QString timeIn;
     QString status;
     QString session;
-
     AttendanceRecord() : id(-1), studentId(-1) {}
 };
-
 struct CafeteriaTransaction {
     int id;
     int studentId;
@@ -47,10 +41,8 @@ struct CafeteriaTransaction {
     int amount;
     QString date;
     QString time;
-
     CafeteriaTransaction() : id(-1), studentId(-1), amount(0) {}
 };
-
 struct Statistics {
     int totalStudents;
     int presentToday;
@@ -61,24 +53,29 @@ struct Statistics {
     double avgAttendance;
     QString topAttendee;
     int totalMonthlySpend;
-
     Statistics() : totalStudents(0), presentToday(0), absentToday(0),
         transactions(0), revenue(0), uniqueStudents(0),
         avgAttendance(0.0), totalMonthlySpend(0) {}
 };
-
+// Menu
+struct MenuItem {
+    int id;
+    QString name;
+    int price;
+    QString category;   // "food" or "drink"
+    MenuItem() : id(-1), price(0) {}
+};
 class DatabaseManager : public QObject
 {
     Q_OBJECT
-
 public:
     static DatabaseManager* instance();
     ~DatabaseManager();
-
     bool initDatabase();
     bool isOpen() const { return m_db.isOpen(); }
     void closeDatabase();
-    QSqlDatabase getDatabase() { return m_db; }  // ADD THIS
+    QSqlDatabase getDatabase() { return m_db; }
+
 
     // Student operations
     bool addStudent(const QString &name, const QString &rollNo,
@@ -96,6 +93,7 @@ public:
     void debugCheckDatabase();
     void closeAllQueries();
 
+
     // Attendance operations
     bool recordAttendance(int studentId, const QString &session);
     bool isAttendanceRecorded(int studentId, const QString &session);
@@ -103,6 +101,7 @@ public:
     QList<AttendanceRecord> getAttendanceByDate(const QString &date);
     QList<AttendanceRecord> getAttendanceByStudent(int studentId);
     int getAttendanceCountByStudent(int studentId);
+
 
     // Cafeteria operations
     bool recordCafeteriaTransaction(int studentId, const QString &item, int amount);
@@ -112,23 +111,28 @@ public:
     int getTotalTransactionsByStudent(int studentId);
     int getTotalSpentByStudent(int studentId);
 
+
+    // Menu items (food & drinks catalogue) — NEW
+    bool addMenuItem(const QString &name, int price, const QString &category = "food");
+    QList<MenuItem> getAllMenuItems();
+
+
     // Statistics and Reports
     Statistics getStatistics();
     Statistics getStatisticsForDate(const QString &date);
     QList<QMap<QString, QVariant>> getAttendanceReport();
     QList<QMap<QString, QVariant>> getCafeteriaReport();
     QList<QMap<QString, QVariant>> getStudentReport();
-
     QString getCurrentDate() const;
     QString getCurrentTime() const;
+
 
 private:
     explicit DatabaseManager(QObject *parent = nullptr);
     static DatabaseManager* m_instance;
     QSqlDatabase m_db;
-
     bool createTables();
     bool insertSampleData();
+    bool insertDefaultMenuItems();
 };
-
-#endif // DATABASE_H
+#endif
