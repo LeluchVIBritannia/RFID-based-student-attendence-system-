@@ -9,6 +9,7 @@ LoginPage::LoginPage(QWidget *parent)
     : QWidget(parent), ui(new Ui::LoginPage)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_StyledBackground, true); // required for QWidget to paint its stylesheet background-color
     qDebug() << "LoginPage constructor";
 
     QPushButton *loginBtn = findChild<QPushButton*>("pushButtonSignIn");
