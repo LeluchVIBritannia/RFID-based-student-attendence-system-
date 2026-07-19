@@ -187,11 +187,9 @@ The RFID-Based Student Attendance and Cafeteria Management System demonstrates a
 
 
 
- 10. License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
+
  Institution
 
 Kathmandu University
