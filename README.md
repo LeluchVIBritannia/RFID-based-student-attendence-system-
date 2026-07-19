@@ -17,19 +17,17 @@ Kathmandu University
 Submitted to: Suman Shrestha
 
 
----
 
 Abstract
 
 This project presents the design and implementation of an RFID-based system for automating student attendance tracking and cafeteria payments within an academic institution. Each student is issued a unique RFID card, which serves as a single credential for both marking attendance and making cashless payments at the cafeteria. The system aims to reduce manual record-keeping errors, prevent proxy attendance, and streamline cafeteria transactions through real-time card verification and database logging.
 
----
+
 
 1. Introduction
 
 Traditional methods of taking attendance and managing cafeteria payments in institutions are time-consuming, prone to human error, and vulnerable to manipulation (e.g., proxy attendance). This project addresses these limitations by introducing a unified RFID-based solution that automates both processes using a single card per student, supported by embedded hardware and a desktop management application.
 
----
 
  2. Objectives
 
@@ -129,9 +127,9 @@ rfid_system/
 ├── .gitignore
 ├── LICENSE
 └── README.md
-```
 
----
+
+
 7. Module Description
 
 | Module | Description |
@@ -145,7 +143,7 @@ rfid_system/
 | Register Card | Interface to assign a new RFID card to a student |
 | Scan Terminal | Kiosk-style feedback display (Marked / Already Recorded / Invalid Card / Payment) |
 
----
+
 
  8. Build and Execution Instructions
 
@@ -175,7 +173,6 @@ cmake --build build
 ```bash
 ./rfid_system        # Linux/macOS
 rfid_system.exe      # Windows
-```
 
 Demo credentials:Username: `admin` | Password: `admin123`
 
