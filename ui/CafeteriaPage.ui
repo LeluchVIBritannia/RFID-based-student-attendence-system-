@@ -2,14 +2,14 @@
 <ui version="4.0"><class>CafeteriaPage</class><widget class="QWidget" name="CafeteriaPage">
  <property name="geometry"><rect><x>0</x><y>0</y><width>900</width><height>700</height></rect></property>
  <property name="windowTitle"><string>CafeteriaPage</string></property>
- <property name="styleSheet"><string notr="true">QWidget#CafeteriaPage { background-color: #1C1C2E; }</string></property>
+ <property name="styleSheet"><string notr="true">QWidget#CafeteriaPage { background-color: #F5F6FA; }</string></property>
          <layout class="QVBoxLayout" name="cafeteriaLayout">
           <property name="leftMargin"><number>32</number></property><property name="topMargin"><number>28</number></property><property name="rightMargin"><number>32</number></property><property name="bottomMargin"><number>28</number></property><property name="spacing"><number>20</number></property>
 
           <item>
            <widget class="QLabel" name="labelCafTitle">
             <property name="text"><string>Cafeteria Transactions</string></property>
-            <property name="styleSheet"><string notr="true">color:#FFFFFF;font-size:22px;font-weight:700;background:transparent;border:none;</string></property>
+            <property name="styleSheet"><string notr="true">color: #1A1A2E;font-size:22px;font-weight:700;background:transparent;border:none;</string></property>
            </widget>
           </item>
 
@@ -19,10 +19,10 @@
 
             <item>
              <widget class="QFrame" name="cafCard1">
-              <property name="styleSheet"><string notr="true">QFrame#cafCard1{background-color:#24243A;border:1px solid #3A3A5A;border-radius:12px;border-left:4px solid #F39C12;}</string></property>
+              <property name="styleSheet"><string notr="true">QFrame#cafCard1{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:12px;border-left:4px solid #F39C12;}</string></property>
               <layout class="QVBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>18</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>18</number></property><property name="spacing"><number>6</number></property>
                <item><widget class="QLabel"><property name="text"><string>💳</string></property><property name="styleSheet"><string notr="true">font-size:26px;background:transparent;border:none;</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>TODAY'S TRANSACTIONS</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#5A5A80;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>TODAY'S TRANSACTIONS</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#6B7280;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
                <item><widget class="QLabel" name="cafVal1"><property name="text"><string>134</string></property><property name="styleSheet"><string notr="true">font-size:28px;font-weight:800;color:#F39C12;background:transparent;border:none;</string></property></widget></item>
               </layout>
              </widget>
@@ -30,10 +30,10 @@
 
             <item>
              <widget class="QFrame" name="cafCard2">
-              <property name="styleSheet"><string notr="true">QFrame#cafCard2{background-color:#24243A;border:1px solid #3A3A5A;border-radius:12px;border-left:4px solid #2ECC71;}</string></property>
+              <property name="styleSheet"><string notr="true">QFrame#cafCard2{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:12px;border-left:4px solid #2ECC71;}</string></property>
               <layout class="QVBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>18</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>18</number></property><property name="spacing"><number>6</number></property>
                <item><widget class="QLabel"><property name="text"><string>💰</string></property><property name="styleSheet"><string notr="true">font-size:26px;background:transparent;border:none;</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>REVENUE TODAY (NPR)</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#5A5A80;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>REVENUE TODAY (NPR)</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#6B7280;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
                <item><widget class="QLabel" name="cafVal2"><property name="text"><string>18,640</string></property><property name="styleSheet"><string notr="true">font-size:28px;font-weight:800;color:#2ECC71;background:transparent;border:none;</string></property></widget></item>
               </layout>
              </widget>
@@ -41,10 +41,10 @@
 
             <item>
              <widget class="QFrame" name="cafCard3">
-              <property name="styleSheet"><string notr="true">QFrame#cafCard3{background-color:#24243A;border:1px solid #3A3A5A;border-radius:12px;border-left:4px solid #3498DB;}</string></property>
+              <property name="styleSheet"><string notr="true">QFrame#cafCard3{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:12px;border-left:4px solid #3498DB;}</string></property>
               <layout class="QVBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>18</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>18</number></property><property name="spacing"><number>6</number></property>
                <item><widget class="QLabel"><property name="text"><string>👤</string></property><property name="styleSheet"><string notr="true">font-size:26px;background:transparent;border:none;</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>UNIQUE STUDENTS</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#5A5A80;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>UNIQUE STUDENTS</string></property><property name="styleSheet"><string notr="true">font-size:10px;font-weight:600;color:#6B7280;letter-spacing:1px;background:transparent;border:none;</string></property></widget></item>
                <item><widget class="QLabel" name="cafVal3"><property name="text"><string>98</string></property><property name="styleSheet"><string notr="true">font-size:28px;font-weight:800;color:#3498DB;background:transparent;border:none;</string></property></widget></item>
               </layout>
              </widget>
@@ -56,18 +56,18 @@
           <item>
            <widget class="QLabel" name="labelTransLog">
             <property name="text"><string>Transaction Log</string></property>
-            <property name="styleSheet"><string notr="true">color:#FFFFFF;font-size:15px;font-weight:600;background:transparent;border:none;</string></property>
+            <property name="styleSheet"><string notr="true">color: #1A1A2E;font-size:15px;font-weight:600;background:transparent;border:none;</string></property>
            </widget>
           </item>
 
           <item>
            <widget class="QTableWidget" name="tableCafeteria">
             <property name="styleSheet">
-             <string notr="true">QTableWidget{background-color:#24243A;border:1px solid #3A3A5A;border-radius:10px;gridline-color:#2E2E4E;font-size:13px;}
-QHeaderView::section{background-color:#2E2E4E;color:#8080A8;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
-QTableWidget::item{padding:11px 14px;color:#C0C0D8;}
-QTableWidget::item:selected{background-color:#2E1F3E;color:#fff;}
-QTableWidget::item:hover{background-color:#2A2A40;}</string>
+             <string notr="true">QTableWidget{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:10px;gridline-color:#EDEFF5;font-size:13px;}
+QHeaderView::section{background-color:#F7F8FA;color:#6B7280;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
+QTableWidget::item{padding:11px 14px;color:#374151;}
+QTableWidget::item:selected{background-color:#FDECEA;color:#1A1A2E;}
+QTableWidget::item:hover{background-color:#F7F8FA;}</string>
             </property>
             <property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property>
             <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>

@@ -7,7 +7,7 @@
   </property>
   <property name="windowTitle"><string>Dashboard</string></property>
   <property name="styleSheet">
-   <string notr="true">QWidget#DashboardPage { background-color: #1C1C2E; }</string>
+   <string notr="true">QWidget#DashboardPage { background-color: #F5F6FA; }</string>
   </property>
 
   
@@ -24,7 +24,7 @@
      <property name="minimumWidth"><number>220</number></property>
      <property name="maximumWidth"><number>220</number></property>
      <property name="styleSheet">
-      <string notr="true">QWidget#sidebar { background-color: #16162A; border-right: 1px solid #2E2E4E; }</string>
+      <string notr="true">QWidget#sidebar { background-color: #FFFFFF; border-right: 1px solid #EDEFF5; }</string>
      </property>
 
      <layout class="QVBoxLayout" name="sidebarLayout">
@@ -52,7 +52,7 @@
           <widget class="QLabel" name="labelBrandName">
            <property name="text"><string>KU RFID</string></property>
            <property name="styleSheet">
-            <string notr="true">color: #FFFFFF; font-size: 17px; font-weight: 800; letter-spacing: 2px; background: transparent;</string>
+            <string notr="true">color: #1A1A2E; font-size: 17px; font-weight: 800; letter-spacing: 2px; background: transparent;</string>
            </property>
           </widget>
          </item>
@@ -76,7 +76,7 @@
        <widget class="QLabel" name="labelMenuSection">
         <property name="text"><string>  MAIN MENU</string></property>
         <property name="styleSheet">
-         <string notr="true">color: #3A3A6A; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 18px; background: transparent;</string>
+         <string notr="true">color: #9CA3AF; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 18px; background: transparent;</string>
         </property>
        </widget>
       </item>
@@ -90,9 +90,9 @@
         <property name="checked"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -105,9 +105,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -120,9 +120,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -135,9 +135,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -150,9 +150,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -165,9 +165,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -180,9 +180,9 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="checkable"><bool>true</bool></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#24243A; color:#E0E0F8; }
-QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px solid #C0392B; font-weight:600; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; border-left:3px solid transparent; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#F5F6FA; color:#1A1A2E; }
+QPushButton:checked { background-color:#FDECEA; color:#C0392B; border-left:3px solid #C0392B; font-weight:600; }</string>
         </property>
        </widget>
       </item>
@@ -203,7 +203,7 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="frameShape"><enum>QFrame::HLine</enum></property>
         <property name="frameShadow"><enum>QFrame::Sunken</enum></property>
         <property name="styleSheet">
-         <string notr="true">background-color: #2E2E4E; border: none; margin: 0 14px;</string>
+         <string notr="true">background-color: #EDEFF5; border: none; margin: 0 14px;</string>
         </property>
        </widget>
       </item>
@@ -215,8 +215,8 @@ QPushButton:checked { background-color:#2E1F3E; color:#FFFFFF; border-left:3px s
         <property name="minimumHeight"><number>46</number></property>
         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
         <property name="styleSheet">
-         <string notr="true">QPushButton { background-color:transparent; color:#8080A8; border:none; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
-QPushButton:hover { background-color:#3A1A1A; color:#E74C3C; }</string>
+         <string notr="true">QPushButton { background-color:transparent; color:#6B7280; border:none; text-align:left; padding-left:18px; font-size:13px; border-radius:0; }
+QPushButton:hover { background-color:#FCE4E1; color:#E74C3C; }</string>
         </property>
        </widget>
       </item>
@@ -231,7 +231,7 @@ QPushButton:hover { background-color:#3A1A1A; color:#E74C3C; }</string>
    <item>
     <widget class="QWidget" name="contentArea">
      <property name="styleSheet">
-      <string notr="true">QWidget#contentArea { background-color: #1C1C2E; }</string>
+      <string notr="true">QWidget#contentArea { background-color: #F5F6FA; }</string>
      </property>
 
      <layout class="QVBoxLayout" name="contentAreaLayout">
@@ -247,7 +247,7 @@ QPushButton:hover { background-color:#3A1A1A; color:#E74C3C; }</string>
         <property name="minimumHeight"><number>58</number></property>
         <property name="maximumHeight"><number>58</number></property>
         <property name="styleSheet">
-         <string notr="true">QWidget#topBar { background-color: #20203A; border-bottom: 1px solid #2E2E4E; }</string>
+         <string notr="true">QWidget#topBar { background-color: #FFFFFF; border-bottom: 1px solid #EDEFF5; }</string>
         </property>
         <layout class="QHBoxLayout" name="topBarLayout">
          <property name="leftMargin"><number>28</number></property>
@@ -258,7 +258,7 @@ QPushButton:hover { background-color:#3A1A1A; color:#E74C3C; }</string>
           <widget class="QLabel" name="labelTopTitle">
            <property name="text"><string>RFID Student Attendance &amp; Cafeteria System</string></property>
            <property name="styleSheet">
-            <string notr="true">color: #FFFFFF; font-size: 15px; font-weight: 700; background: transparent;</string>
+            <string notr="true">color: #1A1A2E; font-size: 15px; font-weight: 700; background: transparent;</string>
            </property>
           </widget>
          </item>
@@ -272,7 +272,7 @@ QPushButton:hover { background-color:#3A1A1A; color:#E74C3C; }</string>
           <widget class="QLabel" name="labelTopDate">
            <property name="text"><string>Wed, 10 Jun 2026</string></property>
            <property name="styleSheet">
-            <string notr="true">color: #5050A0; font-size: 13px; background: transparent;</string>
+            <string notr="true">color: #6B7280; font-size: 13px; background: transparent;</string>
            </property>
           </widget>
          </item>

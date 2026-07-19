@@ -2,14 +2,14 @@
 <ui version="4.0"><class>AttendancePage</class><widget class="QWidget" name="AttendancePage">
  <property name="geometry"><rect><x>0</x><y>0</y><width>900</width><height>700</height></rect></property>
  <property name="windowTitle"><string>AttendancePage</string></property>
- <property name="styleSheet"><string notr="true">QWidget#AttendancePage { background-color: #1C1C2E; }</string></property>
+ <property name="styleSheet"><string notr="true">QWidget#AttendancePage { background-color: #F5F6FA; }</string></property>
          <layout class="QVBoxLayout" name="attendanceLayout">
           <property name="leftMargin"><number>32</number></property><property name="topMargin"><number>28</number></property><property name="rightMargin"><number>32</number></property><property name="bottomMargin"><number>28</number></property><property name="spacing"><number>18</number></property>
 
           <item>
            <widget class="QLabel" name="labelAttTitle">
             <property name="text"><string>Attendance Records</string></property>
-            <property name="styleSheet"><string notr="true">color:#FFFFFF;font-size:22px;font-weight:700;background:transparent;border:none;</string></property>
+            <property name="styleSheet"><string notr="true">color: #1A1A2E;font-size:22px;font-weight:700;background:transparent;border:none;</string></property>
            </widget>
           </item>
 
@@ -17,7 +17,7 @@
            <widget class="QLabel" name="labelAttInfo">
             <property name="text"><string>Scan an RFID card to record attendance. Duplicate entries within the same session are automatically prevented.</string></property>
             <property name="wordWrap"><bool>true</bool></property>
-            <property name="styleSheet"><string notr="true">color:#6060A0;font-size:13px;background:transparent;border:none;</string></property>
+            <property name="styleSheet"><string notr="true">color:#6B7280;font-size:13px;background:transparent;border:none;</string></property>
            </widget>
           </item>
 
@@ -25,7 +25,7 @@
            <widget class="QFrame" name="scanBox">
             <property name="minimumHeight"><number>130</number></property>
             <property name="maximumHeight"><number>130</number></property>
-            <property name="styleSheet"><string notr="true">QFrame#scanBox{background-color:#24243A;border:2px dashed #3A3A6A;border-radius:12px;}</string></property>
+            <property name="styleSheet"><string notr="true">QFrame#scanBox{background-color:#FFFFFF;border:2px dashed #9CA3AF;border-radius:12px;}</string></property>
             <layout class="QVBoxLayout" name="scanBoxLayout">
              <item>
               <widget class="QLabel" name="labelScanIcon">
@@ -38,7 +38,7 @@
               <widget class="QLabel" name="labelScanText">
                <property name="text"><string>Waiting for RFID card scan...</string></property>
                <property name="alignment"><set>Qt::AlignCenter</set></property>
-               <property name="styleSheet"><string notr="true">color:#5050A0;font-size:14px;background:transparent;border:none;</string></property>
+               <property name="styleSheet"><string notr="true">color:#6B7280;font-size:14px;background:transparent;border:none;</string></property>
               </widget>
              </item>
             </layout>
@@ -48,18 +48,18 @@
           <item>
            <widget class="QLabel" name="labelAttTableTitle">
             <property name="text"><string>Today's Attendance</string></property>
-            <property name="styleSheet"><string notr="true">color:#FFFFFF;font-size:15px;font-weight:600;background:transparent;border:none;</string></property>
+            <property name="styleSheet"><string notr="true">color: #1A1A2E;font-size:15px;font-weight:600;background:transparent;border:none;</string></property>
            </widget>
           </item>
 
           <item>
            <widget class="QTableWidget" name="tableAttendance">
             <property name="styleSheet">
-             <string notr="true">QTableWidget{background-color:#24243A;border:1px solid #3A3A5A;border-radius:10px;gridline-color:#2E2E4E;font-size:13px;}
-QHeaderView::section{background-color:#2E2E4E;color:#8080A8;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
-QTableWidget::item{padding:11px 14px;color:#C0C0D8;}
-QTableWidget::item:selected{background-color:#2E1F3E;color:#fff;}
-QTableWidget::item:hover{background-color:#2A2A40;}</string>
+             <string notr="true">QTableWidget{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:10px;gridline-color:#EDEFF5;font-size:13px;}
+QHeaderView::section{background-color:#F7F8FA;color:#6B7280;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
+QTableWidget::item{padding:11px 14px;color:#374151;}
+QTableWidget::item:selected{background-color:#FDECEA;color:#1A1A2E;}
+QTableWidget::item:hover{background-color:#F7F8FA;}</string>
             </property>
             <property name="editTriggers"><set>QAbstractItemView::NoEditTriggers</set></property>
             <property name="selectionBehavior"><enum>QAbstractItemView::SelectRows</enum></property>

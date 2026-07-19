@@ -14,7 +14,7 @@
    <string>RegisterCardPage</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#RegisterCardPage { background-color: #1C1C2E; }</string>
+   <string notr="true">QWidget#RegisterCardPage { background-color: #F5F6FA; }</string>
   </property>
   <layout class="QVBoxLayout" name="registerLayout">
    <property name="spacing">
@@ -35,7 +35,7 @@
    <item>
     <widget class="QLabel" name="labelRegisterTitle">
      <property name="styleSheet">
-      <string notr="true">color:#FFFFFF; font-size:22px; font-weight:700; background:transparent; border:none;</string>
+      <string notr="true">color: #1A1A2E; font-size:22px; font-weight:700; background:transparent; border:none;</string>
      </property>
      <property name="text">
       <string>RFID Card Registration</string>
@@ -45,7 +45,7 @@
    <item>
     <widget class="QLabel" name="labelRegisterInfo">
      <property name="styleSheet">
-      <string notr="true">color:#6060A0; font-size:13px; background:transparent; border:none;</string>
+      <string notr="true">color:#6B7280; font-size:13px; background:transparent; border:none;</string>
      </property>
      <property name="text">
       <string>Assign a new RFID card to a student. Scan the card to capture its unique ID, then fill in the student details below.</string>
@@ -58,7 +58,7 @@
    <item>
     <widget class="QFrame" name="registerFormCard">
      <property name="styleSheet">
-      <string notr="true">QFrame#registerFormCard{background-color:#24243A;border:1px solid #3A3A5A;border-radius:12px;}</string>
+      <string notr="true">QFrame#registerFormCard{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:12px;}</string>
      </property>
      <layout class="QVBoxLayout" name="registerFormLayout">
       <property name="spacing">
@@ -79,7 +79,7 @@
       <item>
        <widget class="QLabel" name="labelRegRfid">
         <property name="styleSheet">
-         <string notr="true">font-size:12px; font-weight:600; color:#A0A0C0; background:transparent; border:none;</string>
+         <string notr="true">font-size:12px; font-weight:600; color:#6B7280; background:transparent; border:none;</string>
         </property>
         <property name="text">
          <string>RFID Card ID</string>
@@ -110,7 +110,7 @@
         <item>
          <widget class="QLineEdit" name="lineEditRfidId">
           <property name="styleSheet">
-           <string notr="true">QLineEdit{background-color:#2A2A3E;color:#E8E8F0;border:1px solid #3E3E5E;border-radius:8px;padding:0 14px;font-size:13px;}
+           <string notr="true">QLineEdit{background-color:#F7F8FA;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;padding:0 14px;font-size:13px;}
 QLineEdit:focus{border:1.5px solid #C0392B;}</string>
           </property>
           <property name="placeholderText">
@@ -130,8 +130,8 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{background-color:#2E2E4E;color:#E0E0F8;border:1px solid #3E3E5E;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#3A3A5E;}</string>
+           <string notr="true">QPushButton{background-color:#EDEFF5;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#F0F1F5;}</string>
           </property>
           <property name="text">
            <string>📡 Scan</string>
@@ -159,7 +159,7 @@ QPushButton:hover{background-color:#3A3A5E;}</string>
       <item>
        <widget class="QLabel" name="labelRegName">
         <property name="styleSheet">
-         <string notr="true">font-size:12px; font-weight:600; color:#A0A0C0; background:transparent; border:none;</string>
+         <string notr="true">font-size:12px; font-weight:600; color:#6B7280; background:transparent; border:none;</string>
         </property>
         <property name="text">
          <string>Full Name</string>
@@ -185,7 +185,7 @@ QPushButton:hover{background-color:#3A3A5E;}</string>
       <item>
        <widget class="QLineEdit" name="lineEditRegName">
         <property name="styleSheet">
-         <string notr="true">QLineEdit{background-color:#2A2A3E;color:#E8E8F0;border:1px solid #3E3E5E;border-radius:8px;padding:0 14px;font-size:13px;}
+         <string notr="true">QLineEdit{background-color:#F7F8FA;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;padding:0 14px;font-size:13px;}
 QLineEdit:focus{border:1.5px solid #C0392B;}</string>
         </property>
         <property name="placeholderText">
@@ -222,7 +222,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
           <item>
            <widget class="QLabel" name="labelRegRoll">
             <property name="styleSheet">
-             <string notr="true">font-size:12px; font-weight:600; color:#A0A0C0; background:transparent; border:none;</string>
+             <string notr="true">font-size:12px; font-weight:600; color:#6B7280; background:transparent; border:none;</string>
             </property>
             <property name="text">
              <string>Roll No.</string>
@@ -232,7 +232,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
           <item>
            <widget class="QLineEdit" name="lineEditRegRoll">
             <property name="styleSheet">
-             <string notr="true">QLineEdit{background-color:#2A2A3E;color:#E8E8F0;border:1px solid #3E3E5E;border-radius:8px;padding:0 14px;font-size:13px;}
+             <string notr="true">QLineEdit{background-color:#F7F8FA;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;padding:0 14px;font-size:13px;}
 QLineEdit:focus{border:1.5px solid #C0392B;}</string>
             </property>
             <property name="placeholderText">
@@ -250,7 +250,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
           <item>
            <widget class="QLabel" name="labelRegSection">
             <property name="styleSheet">
-             <string notr="true">font-size:12px; font-weight:600; color:#A0A0C0; background:transparent; border:none;</string>
+             <string notr="true">font-size:12px; font-weight:600; color:#6B7280; background:transparent; border:none;</string>
             </property>
             <property name="text">
              <string>Class / Section</string>
@@ -260,7 +260,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
           <item>
            <widget class="QLineEdit" name="lineEditRegSection">
             <property name="styleSheet">
-             <string notr="true">QLineEdit{background-color:#2A2A3E;color:#E8E8F0;border:1px solid #3E3E5E;border-radius:8px;padding:0 14px;font-size:13px;}
+             <string notr="true">QLineEdit{background-color:#F7F8FA;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;padding:0 14px;font-size:13px;}
 QLineEdit:focus{border:1.5px solid #C0392B;}</string>
             </property>
             <property name="placeholderText">
@@ -291,7 +291,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
       <item>
        <widget class="QLabel" name="labelRegBalance">
         <property name="styleSheet">
-         <string notr="true">font-size:12px; font-weight:600; color:#A0A0C0; background:transparent; border:none;</string>
+         <string notr="true">font-size:12px; font-weight:600; color:#6B7280; background:transparent; border:none;</string>
         </property>
         <property name="text">
          <string>Initial Cafeteria Balance (NPR)</string>
@@ -317,7 +317,7 @@ QLineEdit:focus{border:1.5px solid #C0392B;}</string>
       <item>
        <widget class="QLineEdit" name="lineEditRegBalance">
         <property name="styleSheet">
-         <string notr="true">QLineEdit{background-color:#2A2A3E;color:#E8E8F0;border:1px solid #3E3E5E;border-radius:8px;padding:0 14px;font-size:13px;}
+         <string notr="true">QLineEdit{background-color:#F7F8FA;color:#1A1A2E;border:1px solid #E2E4EC;border-radius:8px;padding:0 14px;font-size:13px;}
 QLineEdit:focus{border:1.5px solid #C0392B;}</string>
         </property>
         <property name="placeholderText">
@@ -393,8 +393,8 @@ QPushButton:pressed{background-color:#992D22;}</string>
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{background-color:transparent;color:#A0A0C0;border:1px solid #3E3E5E;border-radius:8px;font-size:14px;font-weight:600;}
-QPushButton:hover{background-color:#2A2A3E;color:#E0E0F8;}</string>
+           <string notr="true">QPushButton{background-color:transparent;color:#6B7280;border:1px solid #E2E4EC;border-radius:8px;font-size:14px;font-weight:600;}
+QPushButton:hover{background-color:#F7F8FA;color:#1A1A2E;}</string>
           </property>
           <property name="text">
            <string>Clear</string>

@@ -9,7 +9,7 @@
    <string>ScanTerminalPage</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#ScanTerminalPage { background-color: #1C1C2E; }</string>
+   <string notr="true">QWidget#ScanTerminalPage { background-color: #F5F6FA; }</string>
   </property>
 
   <layout class="QVBoxLayout" name="scanLayout">
@@ -23,7 +23,7 @@
     <widget class="QLabel" name="labelScanTermTitle">
      <property name="text"><string>RFID Scan Terminal</string></property>
      <property name="styleSheet">
-      <string notr="true">color:#FFFFFF; font-size:22px; font-weight:700; background:transparent; border:none;</string>
+      <string notr="true">color: #1A1A2E; font-size:22px; font-weight:700; background:transparent; border:none;</string>
      </property>
     </widget>
    </item>
@@ -33,7 +33,7 @@
      <property name="text"><string>Live feedback shown on the kiosk display, LED, and buzzer when a card is scanned at the gate or cafeteria counter.</string></property>
      <property name="wordWrap"><bool>true</bool></property>
      <property name="styleSheet">
-      <string notr="true">color:#6060A0; font-size:13px; background:transparent; border:none;</string>
+      <string notr="true">color:#6B7280; font-size:13px; background:transparent; border:none;</string>
      </property>
     </widget>
    </item>
@@ -42,7 +42,7 @@
     <widget class="QFrame" name="scanStatusFrame">
      <property name="minimumHeight"><number>260</number></property>
      <property name="styleSheet">
-      <string notr="true">QFrame#scanStatusFrame { background-color:#24243A; border:1px solid #3A3A5A; border-radius:16px; }</string>
+      <string notr="true">QFrame#scanStatusFrame { background-color:#FFFFFF; border:1px solid #E5E7F0; border-radius:16px; }</string>
      </property>
      <layout class="QVBoxLayout" name="scanStatusLayout">
       <property name="spacing"><number>10</number></property>
@@ -70,7 +70,7 @@
         <property name="text"><string>Waiting for Card...</string></property>
         <property name="alignment"><set>Qt::AlignCenter</set></property>
         <property name="styleSheet">
-         <string notr="true">color:#E8E8F0; font-size:28px; font-weight:800; background:transparent; border:none;</string>
+         <string notr="true">color:#1A1A2E; font-size:28px; font-weight:800; background:transparent; border:none;</string>
         </property>
        </widget>
       </item>
@@ -79,7 +79,7 @@
         <property name="text"><string>Tap an RFID card on the reader to begin</string></property>
         <property name="alignment"><set>Qt::AlignCenter</set></property>
         <property name="styleSheet">
-         <string notr="true">color:#6060A0; font-size:13px; background:transparent; border:none;</string>
+         <string notr="true">color:#6B7280; font-size:13px; background:transparent; border:none;</string>
         </property>
        </widget>
       </item>
@@ -97,7 +97,7 @@
     <widget class="QLabel" name="labelDemoTitle">
      <property name="text"><string>Preview States (demo only)</string></property>
      <property name="styleSheet">
-      <string notr="true">color:#FFFFFF; font-size:13px; font-weight:600; background:transparent; border:none;</string>
+      <string notr="true">color: #1A1A2E; font-size:13px; font-weight:600; background:transparent; border:none;</string>
      </property>
     </widget>
    </item>
@@ -111,8 +111,8 @@
        <property name="minimumHeight"><number>44</number></property>
        <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{background-color:#1E3D2B;color:#2ECC71;border:1px solid #2ECC71;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#234C33;}</string>
+        <string notr="true">QPushButton{background-color:#E8F8EF;color:#2ECC71;border:1px solid #2ECC71;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#DAF3E6;}</string>
        </property>
       </widget>
      </item>
@@ -122,8 +122,8 @@ QPushButton:hover{background-color:#234C33;}</string>
        <property name="minimumHeight"><number>44</number></property>
        <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{background-color:#4A3209;color:#F39C12;border:1px solid #F39C12;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#5A3E0C;}</string>
+        <string notr="true">QPushButton{background-color:#FEF3E0;color:#F39C12;border:1px solid #F39C12;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#FCE8C6;}</string>
        </property>
       </widget>
      </item>
@@ -133,8 +133,8 @@ QPushButton:hover{background-color:#5A3E0C;}</string>
        <property name="minimumHeight"><number>44</number></property>
        <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{background-color:#4A1F1F;color:#E74C3C;border:1px solid #E74C3C;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#5A2626;}</string>
+        <string notr="true">QPushButton{background-color:#FBD9D5;color:#E74C3C;border:1px solid #E74C3C;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#F9C9C4;}</string>
        </property>
       </widget>
      </item>
@@ -144,8 +144,8 @@ QPushButton:hover{background-color:#5A2626;}</string>
        <property name="minimumHeight"><number>44</number></property>
        <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{background-color:#1E2E4A;color:#3498DB;border:1px solid #3498DB;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#243A5A;}</string>
+        <string notr="true">QPushButton{background-color:#EAF3FC;color:#3498DB;border:1px solid #3498DB;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#DCEBFA;}</string>
        </property>
       </widget>
      </item>
@@ -156,8 +156,8 @@ QPushButton:hover{background-color:#243A5A;}</string>
        <property name="minimumWidth"><number>90</number></property>
        <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{background-color:transparent;color:#A0A0C0;border:1px solid #3E3E5E;border-radius:8px;font-size:13px;font-weight:600;}
-QPushButton:hover{background-color:#2A2A3E;color:#E0E0F8;}</string>
+        <string notr="true">QPushButton{background-color:transparent;color:#6B7280;border:1px solid #E2E4EC;border-radius:8px;font-size:13px;font-weight:600;}
+QPushButton:hover{background-color:#F7F8FA;color:#1A1A2E;}</string>
        </property>
       </widget>
      </item>

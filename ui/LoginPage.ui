@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget#LoginPage {
-    background-color: #1C1C2E;
+    background-color: #F5F6FA;
 }
 </string>
   </property>
@@ -70,9 +70,9 @@
       <widget class="QFrame" name="cardFrame">
        <property name="styleSheet">
         <string notr="true">QFrame#cardFrame {
-    background-color: #24243A;
+    background-color: #FFFFFF;
     border-radius: 16px;
-    border: 1px solid #3E3E5E;
+    border: 1px solid #E2E4EC;
 }
 </string>
        </property>
@@ -130,7 +130,7 @@
         <item>
          <widget class="QLabel" name="labelAppName">
           <property name="styleSheet">
-           <string notr="true">font-size: 22px; font-weight: 700; color: #FFFFFF; letter-spacing: 1px; background: transparent; border: none;</string>
+           <string notr="true">font-size: 22px; font-weight: 700; color: #1A1A2E; letter-spacing: 1px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>KU RFID System</string>
@@ -175,7 +175,7 @@
         <item>
          <widget class="QFrame" name="dividerLine">
           <property name="styleSheet">
-           <string notr="true">background-color: #3E3E5E; border: none;</string>
+           <string notr="true">background-color: #E2E4EC; border: none;</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::HLine</enum>
@@ -204,7 +204,7 @@
         <item>
          <widget class="QLabel" name="labelUsername">
           <property name="styleSheet">
-           <string notr="true">font-size: 12px; font-weight: 600; color: #A0A0C0; background: transparent; border: none;</string>
+           <string notr="true">font-size: 12px; font-weight: 600; color: #6B7280; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Username</string>
@@ -231,9 +231,9 @@
          <widget class="QLineEdit" name="lineEditUsername">
           <property name="styleSheet">
            <string notr="true">QLineEdit {
-    background-color: #2A2A3E;
-    color: #E8E8F0;
-    border: 1px solid #3E3E5E;
+    background-color: #F7F8FA;
+    color: #1A1A2E;
+    border: 1px solid #E2E4EC;
     border-radius: 8px;
     padding: 0 14px;
     font-size: 14px;
@@ -267,7 +267,7 @@ QLineEdit:focus {
         <item>
          <widget class="QLabel" name="labelPassword">
           <property name="styleSheet">
-           <string notr="true">font-size: 12px; font-weight: 600; color: #A0A0C0; background: transparent; border: none;</string>
+           <string notr="true">font-size: 12px; font-weight: 600; color: #6B7280; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Password</string>
@@ -294,9 +294,9 @@ QLineEdit:focus {
          <widget class="QLineEdit" name="lineEditPassword">
           <property name="styleSheet">
            <string notr="true">QLineEdit {
-    background-color: #2A2A3E;
-    color: #E8E8F0;
-    border: 1px solid #3E3E5E;
+    background-color: #F7F8FA;
+    color: #1A1A2E;
+    border: 1px solid #E2E4EC;
     border-radius: 8px;
     padding: 0 14px;
     font-size: 14px;
@@ -401,7 +401,7 @@ QPushButton:pressed { background-color: #992D22; }
         <item>
          <widget class="QLabel" name="labelHint">
           <property name="styleSheet">
-           <string notr="true">color: #4A4A7A; font-size: 11px; background: transparent; border: none;</string>
+           <string notr="true">color: #9CA3AF; font-size: 11px; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Demo credentials · username: admin · password: admin123</string>
@@ -417,7 +417,7 @@ QPushButton:pressed { background-color: #992D22; }
         <item>
          <widget class="QLabel" name="labelSubtitle">
           <property name="styleSheet">
-           <string notr="true">font-size: 12px; color: #6060A0; background: transparent; border: none;</string>
+           <string notr="true">font-size: 12px; color: #6B7280; background: transparent; border: none;</string>
           </property>
           <property name="text">
            <string>Attendance &amp; Cafeteria Management</string>

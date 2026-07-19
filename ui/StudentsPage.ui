@@ -14,7 +14,7 @@
    <string>StudentsPage</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget#StudentsPage { background-color: #1C1C2E; }</string>
+   <string notr="true">QWidget#StudentsPage { background-color: #F5F6FA; }</string>
   </property>
   <layout class="QVBoxLayout" name="studentsLayout">
    <property name="spacing">
@@ -37,7 +37,7 @@
      <item>
       <widget class="QLabel" name="labelStudTitle">
        <property name="styleSheet">
-        <string notr="true">color:#FFFFFF;font-size:22px;font-weight:700;background:transparent;border:none;</string>
+        <string notr="true">color: #1A1A2E;font-size:22px;font-weight:700;background:transparent;border:none;</string>
        </property>
        <property name="text">
         <string>Student Registry</string>
@@ -56,13 +56,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonDeleteStudent">
-       <property name="text">
-        <string>Delete</string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonAddStudent">
@@ -90,16 +83,23 @@ QPushButton:hover{background-color:#E74C3C;}</string>
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonDeleteStudent">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <widget class="QTableWidget" name="tableStudents">
      <property name="styleSheet">
-      <string notr="true">QTableWidget{background-color:#24243A;border:1px solid #3A3A5A;border-radius:10px;gridline-color:#2E2E4E;font-size:13px;}
-QHeaderView::section{background-color:#2E2E4E;color:#8080A8;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
-QTableWidget::item{padding:11px 14px;color:#C0C0D8;}
-QTableWidget::item:selected{background-color:#2E1F3E;color:#fff;}
-QTableWidget::item:hover{background-color:#2A2A40;}</string>
+      <string notr="true">QTableWidget{background-color:#FFFFFF;border:1px solid #E5E7F0;border-radius:10px;gridline-color:#EDEFF5;font-size:13px;}
+QHeaderView::section{background-color:#F7F8FA;color:#6B7280;font-size:11px;font-weight:600;padding:11px 14px;border:none;}
+QTableWidget::item{padding:11px 14px;color:#374151;}
+QTableWidget::item:selected{background-color:#FDECEA;color:#1A1A2E;}
+QTableWidget::item:hover{background-color:#F7F8FA;}</string>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
