@@ -14,7 +14,6 @@ Kathmandu University
 | 4    | Pallav Thani     | 32       |
 | 5    | Bishwo Timalsina | 37       |
 
-Submitted to: Suman Shrestha
 
 
 
@@ -55,7 +54,7 @@ The system also generates reports summarizing attendance percentage and monthly 
 |----------|------------|
 | Language | C++ (Qt Framework) |
 | User Interface | Qt Designer (`.ui` files) |
-| Database | MySQL (backend — not included in this repository) |
+| Database | MySQL 
 | Hardware | Audrino UNO , RFID Reader/Tags, LED, Buzzer |
 | Build System | qmake / CMake |
 
