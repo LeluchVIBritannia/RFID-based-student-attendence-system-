@@ -83,13 +83,6 @@ QPushButton:hover{background-color:#E74C3C;}</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonDeleteStudent">
-       <property name="text">
-        <string>Delete</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
