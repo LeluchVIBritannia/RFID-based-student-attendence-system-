@@ -56,7 +56,7 @@ The system also generates reports summarizing attendance percentage and monthly 
 | Language | C++ (Qt Framework) |
 | User Interface | Qt Designer (`.ui` files) |
 | Database | MySQL (backend — not included in this repository) |
-| Hardware | ESP32 microcontroller, RFID Reader/Tags, LED, Buzzer |
+| Hardware | Audrino UNO , RFID Reader/Tags, LED, Buzzer |
 | Build System | qmake / CMake |
 
 ---
