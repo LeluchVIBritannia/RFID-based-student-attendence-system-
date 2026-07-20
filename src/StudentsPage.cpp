@@ -45,11 +45,6 @@ void StudentsPage::connectButtons()
             }
         });
     }
-
-    QPushButton *deleteButton = ui->pushButtonDeleteStudent;
-    if (deleteButton) {
-        connect(deleteButton, &QPushButton::clicked, this, &StudentsPage::onDeleteStudentClicked);
-    }
 }
 
 void StudentsPage::onDeleteStudentClicked()
